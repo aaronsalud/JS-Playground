@@ -1,25 +1,24 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class SearchBar extends Component{
-    state = { term: '' };
+const SearchBar = ({onFormSubmit}) => {
 
-    onFormSubmit = (e) =>{
+    const [term, setTerm] = useState('');
+
+    const onSubmit = (e) => {
         e.preventDefault();
-        this.props.onFormSubmit(this.state.term);
-    }
- 
-    render(){
-        return (
-            <div className="search-bar ui segment">
-                <form className="ui form" action="" onSubmit={this.onFormSubmit}>
-                    <div className="field">
-                        <label htmlFor="">Video Search</label>
-                        <input type="text" value={this.state.term} onChange={(e)=> this.setState({term: e.target.value})}/>
-                    </div>
-                </form>
-            </div>
-        );
-    }
+        onFormSubmit(term);
+    };
+
+    return (
+        <div className="search-bar ui segment">
+            <form onSubmit={onSubmit} className="ui form" >
+                <div className="field">
+                    <label htmlFor="">Video Search</label>
+                    <input type="text" value={term} onChange={(e) => setTerm(e.target.value)} />
+                </div>
+            </form>
+        </div>
+    );
 }
 
 export default SearchBar;
