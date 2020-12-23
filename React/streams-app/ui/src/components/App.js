@@ -7,12 +7,12 @@ import StreamEdit from './streams/StreamEdit';
 import StreamDelete from './streams/StreamDelete';
 import StreamList from './streams/StreamList';
 import StreamShow from './streams/StreamShow';
-
+import history from '../history';
 
 const App = () => {
     return (
         <div className="ui">
-            <BrowserRouter>
+            <BrowserRouter history={history}>
                 <Header />
                 <div className="ui container">
                     <Route path="/" exact component={StreamList} />
