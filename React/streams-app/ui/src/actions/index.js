@@ -19,6 +19,11 @@ export const fetchStreams = () => async dispatch => {
     dispatch({ type: FETCH_STREAMS, payload: response.data });
 };
 
+export const fetchStream = (id) => async dispatch => {
+    const response = await axios.get(`/streams/${id}`);
+    dispatch({ type: FETCH_STREAM, payload: response.data });
+};
+
 export const createStream = formValues => async dispatch => {
     const response = await axios.post('/streams', formValues);
     dispatch({ type: CREATE_STREAM, payload: response.data });
