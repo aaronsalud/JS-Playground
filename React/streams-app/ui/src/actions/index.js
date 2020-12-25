@@ -1,6 +1,6 @@
 import axios from '../api/axios';
 import history from '../history';
-import { SIGN_IN, SIGN_OUT, CREATE_STREAM, EDIT_STREAM, DELETE_STREAM, FETCH_STREAMS, FETCH_STREAM } from './types';
+import { SIGN_IN, SIGN_OUT, CREATE_STREAM, EDIT_STREAM, DELETE_STREAM, FETCH_STREAMS, FETCH_STREAM, CLEAR_SELECTED_STREAM } from './types';
 
 export const signIn = (userId) => {
     return {
@@ -42,3 +42,5 @@ export const deleteStream = (id) => async dispatch => {
     await axios.delete(`/streams/${id}`);
     dispatch({ type: DELETE_STREAM, payload: id });
 };
+
+export const clearSelectedStream = () => ({ type: CLEAR_SELECTED_STREAM });
