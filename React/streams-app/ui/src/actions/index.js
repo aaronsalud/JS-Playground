@@ -36,6 +36,7 @@ export const createStream = formValues => async (dispatch, getState) => {
 export const editStream = (id, formValues) => async dispatch => {
     const response = await axios.put(`/streams/${id}`, formValues);
     dispatch({ type: EDIT_STREAM, payload: response.data });
+    history.push('/');
 };
 
 export const deleteStream = (id) => async dispatch => {
