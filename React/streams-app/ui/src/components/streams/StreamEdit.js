@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { fetchStream, clearSelectedStream } from '../../actions';
 
-const StreamEdit = () => {
-    return (
-        <div>StreamEdit</div>
-    );
+class StreamEdit extends Component {
+
+    componentDidMount() {
+        const streamId = this.props.match.params.id;
+        this.props.fetchStream(streamId);
+    }
+
+    render() {
+        return (
+            <div>StreamEdit</div>
+        );
+    }
+
+    componentWillUnmount() {
+        this.props.clearSelectedStream();
+    }
 };
 
-export default StreamEdit;
+const mapStateToProps = (state) => {
+    return {
+        stream: state.selectedStream
+    }
+}
+
+export default connect(mapStateToProps, { fetchStream, clearSelectedStream })(StreamEdit);
