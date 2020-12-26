@@ -42,6 +42,7 @@ export const editStream = (id, formValues) => async dispatch => {
 export const deleteStream = (id) => async dispatch => {
     await axios.delete(`/streams/${id}`);
     dispatch({ type: DELETE_STREAM, payload: id });
+    history.push('/');
 };
 
 export const clearSelectedStream = () => ({ type: CLEAR_SELECTED_STREAM });
