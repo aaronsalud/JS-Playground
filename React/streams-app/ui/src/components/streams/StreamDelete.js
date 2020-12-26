@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import Modal from '../Modal';
 
-const StreamDelete = () => {
+const StreamDelete = props => {
 
     const modalTitle = 'Delete Stream';
     const modalDescription = 'Are you sure you want to delete this stream?';
@@ -12,9 +12,13 @@ const StreamDelete = () => {
             <button className="ui button">Cancel</button>
         </Fragment>
     );
-    
+
+    const onDismiss = () => {
+        props.history.push('/');
+    }
+
     return (
-        <Modal title={modalTitle} description={modalDescription} actions={modalActions} />
+        <Modal title={modalTitle} description={modalDescription} actions={modalActions} onDismiss={onDismiss} />
     );
 };
 
