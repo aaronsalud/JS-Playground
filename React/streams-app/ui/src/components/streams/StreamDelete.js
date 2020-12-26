@@ -16,7 +16,7 @@ class StreamDelete extends Component {
         );
     }
 
-    renderModalDescription() {
+    renderModalContent() {
         if (this.props.stream) {
             return (
                 <Fragment>
@@ -43,9 +43,7 @@ class StreamDelete extends Component {
     }
 
     render() {
-        return (
-            <Modal title={this.modalTitle} description={this.renderModalDescription()} actions={this.renderModalActions()} onDismiss={this.onDismiss} />
-        );
+        return <Modal title={this.modalTitle} content={this.renderModalContent()} actions={this.renderModalActions()} onDismiss={this.onDismiss} />;
     }
 }
 
