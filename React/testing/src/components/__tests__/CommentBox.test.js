@@ -17,3 +17,12 @@ it('has a text area and a button', () => {
     expect(wrapper.find('button').length).toEqual(1);
 });
 
+it('has a text area that users can type in', () => {
+    // Simulate change event
+    wrapper.find('textarea').simulate('change', {
+        target: { value: 'new comment'}
+    });
+    wrapper.update(); // Force component to re render
+
+    expect(wrapper.find('textarea').prop('value')).toEqual('new comment'); // Expect textarea value prop to contain new value set from change event
+});
