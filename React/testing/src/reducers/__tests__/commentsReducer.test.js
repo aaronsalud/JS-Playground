@@ -10,3 +10,8 @@ it('handle actions of type ADD_COMMENT', () => {
     const newState = commentsReducer([], action);
     expect(newState).toEqual(['New Comment']);
 });
+
+it('handles action with unknown type', ()=> {
+    const newState = commentsReducer([], {type: 'UNKNOWN_TYPE' });
+    expect(newState).toEqual([]);
+});
