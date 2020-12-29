@@ -17,25 +17,29 @@ it('has a text area and a button', () => {
     expect(wrapper.find('button').length).toEqual(1);
 });
 
-it('has a text area that users can type in', () => {
-    // Simulate change event
-    wrapper.find('textarea').simulate('change', {
-        target: { value: 'new comment' }
-    });
-    wrapper.update(); // Force component to re render
+describe('the text area', () => {
 
-    expect(wrapper.find('textarea').prop('value')).toEqual('new comment'); // Expect textarea value prop to contain new value set from change event
-});
-
-it('should clear the textarea when form is submitted', () => {
-    wrapper.find('textarea').simulate('change', {
-        target: { value: 'new comment'}
+    beforeEach(() => {
+        // Simulate change event
+        wrapper.find('textarea').simulate('change', {
+            target: { value: 'new comment' }
+        });
+        wrapper.update(); // Force component to re render
     });
 
-    wrapper.update();
+    it('has a text area that users can type in', () => {
+        expect(wrapper.find('textarea').prop('value')).toEqual('new comment'); // Expect textarea value prop to contain new value set from change event
+    });
 
-    wrapper.find('form').simulate('submit');
-    wrapper.update();
+    it('should clear the textarea when form is submitted', () => {
 
-    expect(wrapper.find('textarea').prop('value')).toEqual('');
+        expect(wrapper.find('textarea').prop('value')).toEqual('new comment');
+
+        wrapper.find('form').simulate('submit');
+        wrapper.update();
+
+        expect(wrapper.find('textarea').prop('value')).toEqual('');
+    });
+
 });
+
