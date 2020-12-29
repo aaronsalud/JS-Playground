@@ -4,9 +4,15 @@ class CommentBox extends Component {
 
     state = { comment: '' };
 
+    handleSubmit = e => {
+        e.preventDefault();
+
+        this.setState({ comment: '' });
+    }
+
     render() {
         return (
-            <form action="">
+            <form onSubmit={this.handleSubmit}>
                 <h4>Add a comment</h4>
                 <textarea name="" id="" cols="30" rows="10" value={this.state.comment} onChange={(e) => this.setState({ comment: e.target.value })}></textarea>
                 <div>
