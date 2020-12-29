@@ -1,6 +1,6 @@
 import { ADD_COMMENT } from 'actions/types';
 
-const commentReducer = (state = [], action) => {
+const commentsReducer = (state = [], action) => {
     switch (action.type) {
         case ADD_COMMENT:
             return [...state, action.payload];
@@ -9,4 +9,4 @@ const commentReducer = (state = [], action) => {
     }
 }
 
-export default commentReducer;
+export default commentsReducer;
