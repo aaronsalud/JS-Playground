@@ -33,9 +33,6 @@ describe('the text area', () => {
     });
 
     it('should clear the textarea when form is submitted', () => {
-
-        expect(wrapper.find('textarea').prop('value')).toEqual('new comment');
-
         wrapper.find('form').simulate('submit');
         wrapper.update();
 
