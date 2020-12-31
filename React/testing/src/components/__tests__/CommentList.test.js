@@ -17,6 +17,10 @@ beforeEach(() => {
     );
 });
 
+afterEach(() => {
+    wrapper.unmount();
+});
+
 it('creates one li tag per comment', () => {
     expect(wrapper.find('li').length).toEqual(2);
 });
