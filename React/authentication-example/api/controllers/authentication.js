@@ -7,6 +7,12 @@ const generateJWT = (user) => {
     return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
 };
 
+exports.signIn = async (req, res, next) => {
+    // User has already had their email and password authenticated
+    // We just need to give them a JWT
+    res.send({ token: generateJWT(req.user) });
+};
+
 exports.signUp = async (req, res, next) => {
     const { email, password } = req.body;
 
