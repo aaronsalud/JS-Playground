@@ -1,11 +1,19 @@
 import axios from 'axios';
-import { AUTH_USER } from './types';
+import { AUTH_ERROR, AUTH_USER } from './types';
 
 export const signUp = ({ email, password }) => async dispatch => {
-    const response = await axios.post('/signup', { email, password });
-
-    dispatch({
-        action: AUTH_USER,
-        payload: response.data.token
-    });
+    try {
+        const response = await axios.post('/signup', { email, password });
+        dispatch({
+            type: AUTH_USER,
+            payload: response.data.token
+        });
+    }
+    catch (e) {
+        const errorMessage = e.response.data.error;
+        dispatch({
+            type: AUTH_ERROR,
+            payload: errorMessage
+        })
+    }
 };
