@@ -5,6 +5,7 @@ import Feature from './Feature';
 import Header from './Header';
 import Welcome from './Welcome';
 import Signout from './auth/Signout';
+import Signin from './auth/Signin';
 
 const App = () => {
     return (
@@ -15,6 +16,7 @@ const App = () => {
                 <Route path="/signup" exact component={Signup}/>
                 <Route path="/feature" exact component={Feature}/>
                 <Route path="/signout" exact component={Signout} />
+                <Route path="/signin" exact component={Signin}/>
             </BrowserRouter>
         </div>
     );
