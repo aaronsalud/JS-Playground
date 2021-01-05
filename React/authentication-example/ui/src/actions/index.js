@@ -8,6 +8,7 @@ export const signUp = ({ email, password }, redirect) => async dispatch => {
             type: AUTH_USER,
             payload: response.data.token
         });
+        localStorage.setItem('token', response.data.token);
         redirect();
     }
     catch (e) {
