@@ -19,3 +19,11 @@ export const signUp = ({ email, password }, redirect) => async dispatch => {
         })
     }
 };
+
+export const signOut = () => {
+    localStorage.removeItem('token');
+    return {
+        type: AUTH_USER,
+        payload: ''
+    }
+} 
