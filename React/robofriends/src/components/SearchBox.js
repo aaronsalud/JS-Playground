@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-const SearchBox = () => {
-
-    const [searchTerm, setSearchTerm] = useState('');
-
-    useEffect(() => {
-        console.log(searchTerm);
-    }, [searchTerm])
-
+const SearchBox = ({onSearchChange}) => {
     return (
         <div className="mb3">
-            <input type="search" placeholder="search robots" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <input type="search" placeholder="search robots" onChange={e => onSearchChange(e.target.value)} />
         </div>
     );
 };
