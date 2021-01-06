@@ -1,8 +1,20 @@
 import React from 'react';
+import Card from './Card';
+import { robots} from './robots';
 
 const App = () => {
-    return(
-        <div>App</div>
+
+
+    const renderRobots = () =>{
+        return robots.map((robot)=>{
+            return <Card key={robot.id} robot={robot}/>
+        });
+    }
+
+    return( 
+        <div>
+            {renderRobots()}
+        </div>
     );
 };
 
