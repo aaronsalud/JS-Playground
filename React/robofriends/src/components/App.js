@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CardList from './CardList';
 import { robots } from './robots';
 import SearchBox from './SearchBox';
+import '../styles/App.css';
 
 const App = () => {
 
