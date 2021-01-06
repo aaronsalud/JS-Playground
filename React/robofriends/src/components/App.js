@@ -3,6 +3,7 @@ import axios from 'axios';
 import CardList from './CardList';
 import Scroll from './Scroll';
 import SearchBox from './SearchBox';
+import ErrorBoundary from './ErrorBoundary';
 import '../styles/App.css';
 
 const App = () => {
@@ -36,7 +37,9 @@ const App = () => {
             <h1 className="f1">RoboFriends</h1>
             <SearchBox onSearchChange={onSearchChange} />
             <Scroll>
-                <CardList robots={robots} />
+                <ErrorBoundary>
+                    <CardList robots={robots} />
+                </ErrorBoundary>
             </Scroll>
         </div>
     );
