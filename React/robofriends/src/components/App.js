@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import CardList from './CardList';
+import Scroll from './Scroll';
 import SearchBox from './SearchBox';
 import '../styles/App.css';
-import axios from 'axios';
 
 const App = () => {
 
@@ -25,7 +26,7 @@ const App = () => {
 
     };
 
-    const fetchRobots = async() => {
+    const fetchRobots = async () => {
         const response = await axios.get('https://jsonplaceholder.typicode.com/users');
         setRobots(response.data);
     };
@@ -34,7 +35,9 @@ const App = () => {
         <div className="tc">
             <h1 className="f1">RoboFriends</h1>
             <SearchBox onSearchChange={onSearchChange} />
-            <CardList robots={robots} />
+            <Scroll>
+                <CardList robots={robots} />
+            </Scroll>
         </div>
     );
 };
