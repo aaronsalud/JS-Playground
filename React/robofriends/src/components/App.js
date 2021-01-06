@@ -1,31 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardList from './CardList';
-import { robots } from './robots';
 import SearchBox from './SearchBox';
 import '../styles/App.css';
+import axios from 'axios';
 
 const App = () => {
 
-    const [robotItems, setRobotItems] = useState(robots);
+    const [robots, setRobots] = useState([]);
+
+    useEffect(() => {
+        fetchRobots();
+    }, []);
 
     const onSearchChange = (searchText) => {
         if (searchText) {
-            const filteredRobots = robotItems.filter(robots => {
-                return robots.name.toLowerCase().includes(searchText.toLowerCase());
+            const filteredRobots = robots.filter(robot => {
+                return robot.name.toLowerCase().includes(searchText.toLowerCase());
             });
-            setRobotItems(filteredRobots);
+            setRobots(filteredRobots);
         }
         else {
-            setRobotItems(robots);
+            fetchRobots();
         }
 
+    };
+
+    const fetchRobots = async() => {
+        const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+        setRobots(response.data);
     };
 
     return (
         <div className="tc">
             <h1 className="f1">RoboFriends</h1>
             <SearchBox onSearchChange={onSearchChange} />
-            <CardList robots={robotItems} />
+            <CardList robots={robots} />
         </div>
     );
 };
