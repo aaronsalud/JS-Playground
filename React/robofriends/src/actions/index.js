@@ -8,13 +8,8 @@ export const setSearchTerm = searchTerm => (dispatch, getState) => {
     });
 
     const { robots } = getState();
-
-    if (searchTerm) {
-        dispatch(filterRobots(searchTerm, robots));
-    }
-    else {
-        dispatch(fetchRobots());
-    }
+    if (searchTerm) dispatch(filterRobots(searchTerm, robots));
+    else dispatch(fetchRobots());
 };
 
 export const fetchRobots = () => async dispatch => {
