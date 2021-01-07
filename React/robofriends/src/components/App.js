@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import CardList from './CardList';
 import Scroll from './Scroll';
 import SearchBox from './SearchBox';
-import { fetchRobots, setRobots, filterRobots } from '../actions';
+import { fetchRobots } from '../actions';
 import '../styles/App.css';
 
 const App = ({ robots, fetchRobots }) => {
@@ -30,4 +30,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { fetchRobots, setRobots, filterRobots })(App);
+export default connect(mapStateToProps, { fetchRobots })(App);
