@@ -1,8 +1,8 @@
-import { CHANGE_SEARCH_FIELD } from './types';
+import { CHANGE_SEARCH_TERM } from './types';
 
-export const setSearchField = searchTerm => {
+export const setSearchTerm = searchTerm => {
     return {
-        type: CHANGE_SEARCH_FIELD,
+        type: CHANGE_SEARCH_TERM,
         payload: searchTerm
     }
 };
