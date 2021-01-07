@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development"
+    "start": "webpack serve --config ./webpack.config.js --mode development"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/preset-react": "^7.12.10",
     "webpack": "^5.11.1",
     "webpack-cli": "^4.3.1",
-    "webpack-devserver": "0.0.6"
+    "webpack-dev-server": "^3.11.1"
   }
 }
