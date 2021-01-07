@@ -1,48 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import CardList from './CardList';
 import Scroll from './Scroll';
 import SearchBox from './SearchBox';
-import ErrorBoundary from './ErrorBoundary';
+import { fetchRobots, setRobots, filterRobots } from '../actions';
 import '../styles/App.css';
 
-const App = () => {
-
-    const [robots, setRobots] = useState([]);
+const App = ({ robots, fetchRobots }) => {
 
     useEffect(() => {
         fetchRobots();
-    }, []);
-
-    const onSearchChange = (searchText) => {
-        if (searchText) {
-            const filteredRobots = robots.filter(robot => {
-                return robot.name.toLowerCase().includes(searchText.toLowerCase());
-            });
-            setRobots(filteredRobots);
-        }
-        else {
-            fetchRobots();
-        }
-
-    };
-
-    const fetchRobots = async () => {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-        setRobots(response.data);
-    };
+    }, [fetchRobots]);
 
     return (
         <div className="tc">
             <h1 className="f1">RoboFriends</h1>
-            <SearchBox onSearchChange={onSearchChange} />
+            <SearchBox />
             <Scroll>
-                <ErrorBoundary>
-                    <CardList robots={robots} />
-                </ErrorBoundary>
+                <CardList robots={robots} />
             </Scroll>
         </div>
     );
 };
 
-export default App;
+const mapStateToProps = state => {
+    return {
+        searchTerm: state.searchTerm,
+        robots: state.robots
+    }
+}
+
+export default connect(mapStateToProps, { fetchRobots, setRobots, filterRobots })(App);
