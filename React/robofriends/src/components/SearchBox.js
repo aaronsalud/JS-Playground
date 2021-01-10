@@ -2,10 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { setSearchTerm } from '../actions';
 
-const SearchBox = ({ searchTerm, setSearchTerm }) => {
+const SearchBox = ({ setSearchTerm }) => {
+
+    let searchTimer = null;
+    const onSearchTermChange = e => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            setSearchTerm(e.target.value);
+        }, 500);
+    };
+
     return (
         <div className="mb3">
-            <input type="search" placeholder="search robots" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+            <input type="search" placeholder="search robots" onChange={onSearchTermChange} />
         </div>
     );
 };
