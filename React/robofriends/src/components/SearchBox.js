@@ -14,7 +14,7 @@ const SearchBox = ({ setSearchTerm }) => {
 
     return (
         <div className="mb3">
-            <input type="search" placeholder="search robots" onChange={onSearchTermChange} />
+            <input aria-label="Search Robots" type="search" placeholder="Search Robots" onChange={onSearchTermChange} />
         </div>
     );
 };
