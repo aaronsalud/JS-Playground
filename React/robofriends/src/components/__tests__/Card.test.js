@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Card from '../Card';
 
-let robot = {};
+let robot = null;
 beforeEach(() => {
     robot = {
         name: 'test',
@@ -11,5 +11,5 @@ beforeEach(() => {
 });
 
 it('expect to render Card Component', () => {
-    expect(shallow(<Card robot={robot} />).length).toEqual(1);
+    expect(shallow(<Card robot={robot} />)).toMatchSnapshot();
 })
