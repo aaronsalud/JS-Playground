@@ -12,4 +12,4 @@ beforeEach(() => {
 
 it('expect to render Card Component', () => {
     expect(shallow(<Card robot={robot} />)).toMatchSnapshot();
-})
+});
