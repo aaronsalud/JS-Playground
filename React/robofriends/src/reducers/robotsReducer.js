@@ -1,9 +1,9 @@
 import { SET_ROBOTS } from '../actions/types';
 
-const robotsReducer = (state = [], action) => {
-    switch (action.type) {
+const robotsReducer = (state = [], {type, payload}) => {
+    switch (type) {
         case SET_ROBOTS:
-            return [...action.payload];
+            return [...payload];
         default:
             return state;
     }
