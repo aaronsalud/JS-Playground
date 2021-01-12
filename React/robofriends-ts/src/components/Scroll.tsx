@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 type Props = {
-  children: JSX.Element
+  children?: JSX.Element
 }
 
 const Scroll = (props: Props) => {
