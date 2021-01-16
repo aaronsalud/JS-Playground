@@ -7,6 +7,10 @@ services:
     build: ./
     command: npm start
     working_dir: /usr/src/smart-brain-api
+    environment:
+      POSTGRES_URI: postgres://root:password@postgres:5432/smartbrain
+    links:
+      - postgres
     ports: 
       - "5000:5000"
     volumes:
@@ -14,6 +18,11 @@ services:
   
   # Postgres DB
   postgres:
-    image: postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: smartbrain
+      POSTGRES_HOST: postgres
+    build: ./postgres
     ports:
       - "5432:5432"
