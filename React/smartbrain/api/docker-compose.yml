@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  smartbrain-api:
+    container_name: smartbrain-api
+    #image: node:14.15.1
+    build: ./
+    command: npm start
+    working_dir: /usr/src/smart-brain-api
+    ports: 
+      - "5000:5000"
