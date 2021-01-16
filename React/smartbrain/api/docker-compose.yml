@@ -1,9 +1,9 @@
 version: '3.9'
 
 services:
+  # API
   smartbrain-api:
     container_name: smartbrain-api
-    #image: node:14.15.1
     build: ./
     command: npm start
     working_dir: /usr/src/smart-brain-api
@@ -11,3 +11,9 @@ services:
       - "5000:5000"
     volumes:
       - ./:/usr/src/smart-brain-api
+  
+  # Postgres DB
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
