@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
+import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
@@ -7,6 +8,7 @@ import Register from './components/Register/Register';
 import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
+import ProfileSummary from './components/Profile/ProfileSummary';
 import './App.css';
 
 const particlesOptions = {
@@ -28,6 +30,7 @@ const initialState = {
   boxes: [],
   route: 'signin',
   isSignedIn: false,
+  isProfileModalOpen: false,
   user: {
     id: '',
     name: '',
@@ -112,21 +115,34 @@ class App extends Component {
 
   onRouteChange = (route) => {
     if (route === 'signout') {
-      this.setState(initialState)
+      return this.setState(initialState)
     } else if (route === 'home') {
       this.setState({ isSignedIn: true })
     }
     this.setState({ route: route });
   }
 
+  toggleProfileModal = () => {
+    this.setState({ isProfileModalOpen: !this.state.isProfileModalOpen });
+  }
+
   render() {
-    const { isSignedIn, imageUrl, route, boxes } = this.state;
+    const { isSignedIn, imageUrl, route, boxes, isProfileModalOpen, user } = this.state;
     return (
       <div className="App">
         <Particles className='particles'
           params={particlesOptions}
         />
-        <Navigation isSignedIn={isSignedIn} onRouteChange={this.onRouteChange} />
+        <Navigation isSignedIn={isSignedIn} toggleProfileModal={this.toggleProfileModal} onRouteChange={this.onRouteChange} />
+        {
+          isProfileModalOpen &&
+          <Modal isOpen={isProfileModalOpen} toggle={this.toggleProfileModal} backdrop={true} keyboard={true}>
+            <ModalHeader toggle={this.toggleProfileModal}>Profile Summary</ModalHeader>
+            <ModalBody>
+              <ProfileSummary user={user}/>
+            </ModalBody>
+          </Modal>
+        }
         { route === 'home'
           ? <div>
             <Logo />
