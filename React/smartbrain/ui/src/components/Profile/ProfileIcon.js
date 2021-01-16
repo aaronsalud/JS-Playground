@@ -11,7 +11,7 @@ const ProfileIcon = (props) => {
                     <img src="http://tachyons.io/img/logo.jpg" className="br-100 ba h3 w3 dib" alt="avatar" />
                 </DropdownToggle>
                 <DropdownMenu right style={{ marginTop: '20px', backgroundColor: 'rgba(255 255 255 0.5)' }}>
-                    <DropdownItem onClick={() => props.onRouteChange('profile')}>View Profile</DropdownItem>
+                    <DropdownItem onClick={() => props.toggleProfileModal()}>View Profile</DropdownItem>
                     <DropdownItem onClick={() => props.onRouteChange('signout')}>Signout</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
