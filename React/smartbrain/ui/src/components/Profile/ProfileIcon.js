@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
 const ProfileIcon = () => {
     const [dropdownToggle, setDropdownToggle] = useState(false);
 
