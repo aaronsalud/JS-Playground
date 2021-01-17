@@ -1,3 +1,6 @@
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 const handleSignin = (db, bcrypt, req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -24,12 +27,24 @@ const getAuthTokenId = () => {
   console.log('auth ok');
 }
 
+const signToken = email => {
+  const jwtPayload = { email };
+  return jwt.sign(jwtPayload, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
+}
+
+const createSession = user => {
+  const { email, id } = user;
+  const token = signToken(email);
+  return Promise.resolve({ success: 'true', userId: id, token });
+}
+
 const signinAuthentication = (db, bcrypt) => (req, res) => {
   const { authorization } = req.headers;
   return authorization ? getAuthTokenId() :
     handleSignin(db, bcrypt, req, res)
-    .then(data => res.json(data))
-    .catch(err => res.status(400).json(err));
+      .then(data => data.id && data.email ? createSession(data) : Promise.reject(data))
+      .then(session => res.json(session))
+      .catch(err => res.status(400).json(err));
 }
 
 module.exports = {
