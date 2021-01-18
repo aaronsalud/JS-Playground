@@ -122,9 +122,10 @@ class App extends Component {
 
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
+    const token = window.sessionStorage.getItem('token');
     fetch('/imageurl', {
       method: 'post',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': token },
       body: JSON.stringify({
         input: this.state.input
       })
@@ -134,7 +135,7 @@ class App extends Component {
         if (response) {
           fetch('/image', {
             method: 'put',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Authorization': token  },
             body: JSON.stringify({
               id: this.state.user.id
             })
