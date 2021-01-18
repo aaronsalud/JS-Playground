@@ -46,10 +46,10 @@ class App extends Component {
     this.state = initialState;
   }
 
-  componentDidMount(){
+  componentDidMount() {
     const token = window.sessionStorage.getItem('token');
 
-    if(token){
+    if (token) {
       fetch('/signin', {
         method: 'post',
         headers: {
@@ -57,14 +57,31 @@ class App extends Component {
           'Authorization': token
         }
       })
-      .then(res=> res.json())
-      .then(data=> {
-        if(data && data.id){
-          console.log('success we need to get user profile');
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.id) {
+            this.fetchUser(data.id, token);
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  fetchUser = (id, token) => {
+    fetch(`/profile/${id}`, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    })
+      .then(res => res.json())
+      .then(user => {
+        if (user && user.email) {
+          this.loadUser(user);
+          this.onRouteChange('home');
         }
       })
-      .catch(err=>console.log(err));
-    }
   }
 
   loadUser = (data) => {
@@ -160,7 +177,7 @@ class App extends Component {
           <Modal isOpen={isProfileModalOpen} toggle={this.toggleProfileModal} backdrop={true} keyboard={true}>
             <ModalHeader toggle={this.toggleProfileModal}>Profile Summary</ModalHeader>
             <ModalBody>
-              <ProfileSummary user={user}/>
+              <ProfileSummary user={user} />
             </ModalBody>
           </Modal>
         }
@@ -179,7 +196,7 @@ class App extends Component {
           </div>
           : (
             route === 'signin'
-              ? <Signin loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
+              ? <Signin fetchUser={this.fetchUser}/>
               : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
           )
         }
