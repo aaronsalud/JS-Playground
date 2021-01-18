@@ -1,5 +1,9 @@
 const jwt = require('jsonwebtoken');
+const redis = require('redis');
 require('dotenv').config();
+
+//Setup Redis
+const redisClient = redis.createClient({host: '127.0.0.1'});
 
 const handleSignin = (db, bcrypt, req, res) => {
   const { email, password } = req.body;
