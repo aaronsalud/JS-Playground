@@ -38,8 +38,8 @@ const getAuthTokenId = (req, res) => {
   });
 }
 
-const signToken = email => {
-  const jwtPayload = { email };
+const signToken = id => {
+  const jwtPayload = { sub: id };
   return jwt.sign(jwtPayload, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
 }
 
@@ -48,8 +48,8 @@ const setToken = (token, id) => {
 }
 
 const createSession = user => {
-  const { email, id } = user;
-  const token = signToken(email);
+  const { id } = user;
+  const token = signToken(id);
 
   return setToken(token, id)
     .then(() => ({ success: true, userId: id, token }))
