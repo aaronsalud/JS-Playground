@@ -4,10 +4,16 @@ import Logo from './Logo/Logo';
 import Rank from './Rank';
 import ImageLinkForm from './ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './FaceRecognition/FaceRecognition';
+import history from '../../history';
 
-const Dashboard = (props) => {
-    const { name, entries } = props.user;
+const Dashboard = ({ user }) => {
 
+    if (!user) {
+        history.push('/signin');
+        return <div></div>;
+    }
+
+    const { name, entries } = user;
     return (
         <div>
             <Logo />
