@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { SET_USER } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
+import history from '../history';
 
 export const fetchUser = async id => {
     try {
@@ -27,7 +28,7 @@ export const signIn = (email, password) => async dispatch => {
         window.sessionStorage.setItem('token', data.token);
         setAuthHeader(data.token);
         dispatch(await fetchUser(data.userId));
-        // this.onRouteChange('home');
+        history.push('/');
     }
     catch (e) {
         console.log(e);
