@@ -1,5 +1,6 @@
 import React from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { signIn } from '../../actions';
 
 class Signin extends React.Component {
 
@@ -13,22 +14,10 @@ class Signin extends React.Component {
     }
   }
 
-  saveAuthTokenInSession = token => {
-    window.sessionStorage.setItem('token', token);
-  }
-
-  onSubmitSignIn = async (e) => {
+  onSubmitSignIn = (e) => {
     e.preventDefault();
-
-    try {
-      const { email, password } = this.state;
-      const { data } = await axios.post('/signin', { email, password });
-      this.saveAuthTokenInSession(data.token);
-      this.props.fetchUser(data.userId, data.token);
-    }
-    catch (e) {
-      console.log(e);
-    }
+    const { email, password } = this.state;
+    this.props.signIn(email, password);
   }
 
   render() {
@@ -75,4 +64,4 @@ class Signin extends React.Component {
   }
 }
 
-export default Signin;
+export default connect(null, { signIn })(Signin);
