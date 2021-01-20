@@ -140,7 +140,7 @@ class App extends Component {
           <Particles className='particles'
             params={particlesOptions}
           />
-          <Navigation isSignedIn={isSignedIn} toggleProfileModal={this.toggleProfileModal} onRouteChange={this.onRouteChange} />
+          <Navigation toggleProfileModal={this.toggleProfileModal} />
           <Switch>
             <Route path="/" exact component={Dashboard} />
             <Route path="/signin" exact component={Signin} />
