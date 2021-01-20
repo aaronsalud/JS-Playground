@@ -9,7 +9,6 @@ import history from '../../history';
 const Dashboard = ({ user }) => {
 
     if (!user) {
-        history.push('/signin');
         return <div></div>;
     }
 
