@@ -62,35 +62,6 @@ class App extends Component {
     }
   }
 
-  fetchUser = (id, token) => {
-    fetch(`/profile/${id}`, {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      }
-    })
-      .then(res => res.json())
-      .then(user => {
-        if (user && user.email) {
-          this.loadUser(user);
-          this.onRouteChange('home');
-        }
-      })
-  }
-
-  loadUser = (data) => {
-    this.setState({
-      user: {
-        id: data.id,
-        name: data.name,
-        email: data.email,
-        entries: data.entries,
-        joined: data.joined
-      }
-    })
-  }
-
   calculateFaceLocations = (data) => {
     return data.outputs[0].data.regions.map(face => {
       const clarifaiFace = face.region_info.bounding_box;
