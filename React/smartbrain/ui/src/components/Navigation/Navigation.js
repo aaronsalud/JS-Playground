@@ -1,11 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ProfileIcon from '../Profile/ProfileIcon';
 
 const Navigation = ({ onRouteChange, isSignedIn, toggleProfileModal }) => {
   if (isSignedIn) {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <ProfileIcon onRouteChange={onRouteChange} toggleProfileModal={toggleProfileModal}/>
+        <ProfileIcon onRouteChange={onRouteChange} toggleProfileModal={toggleProfileModal} />
       </nav>
     );
   } else {
@@ -18,4 +19,9 @@ const Navigation = ({ onRouteChange, isSignedIn, toggleProfileModal }) => {
   }
 }
 
-export default Navigation;
+const mapStateToProps = state => {
+  return {
+    isSignedIn: state.user ? true : false
+  }
+}
+export default connect(mapStateToProps)(Navigation);
