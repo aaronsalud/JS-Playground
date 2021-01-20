@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
+import { Router, Route, Switch } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody } from 'reactstrap';
-import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+
 import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
-import Logo from './components/Logo/Logo';
-import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
-import Rank from './components/Rank/Rank';
+import Dashboard from './components/Dashboard/Dashboard';
 import ProfileSummary from './components/Profile/ProfileSummary';
+
+import history from './history';
 import './App.css';
 
 const particlesOptions = {
@@ -135,7 +136,7 @@ class App extends Component {
         if (response) {
           fetch('/image', {
             method: 'put',
-            headers: { 'Content-Type': 'application/json', 'Authorization': token  },
+            headers: { 'Content-Type': 'application/json', 'Authorization': token },
             body: JSON.stringify({
               id: this.state.user.id
             })
@@ -169,10 +170,20 @@ class App extends Component {
     const { isSignedIn, imageUrl, route, boxes, isProfileModalOpen, user } = this.state;
     return (
       <div className="App">
-        <Particles className='particles'
-          params={particlesOptions}
-        />
-        <Navigation isSignedIn={isSignedIn} toggleProfileModal={this.toggleProfileModal} onRouteChange={this.onRouteChange} />
+
+        <Router history={history}>
+          <Particles className='particles'
+            params={particlesOptions}
+          />
+          <Navigation isSignedIn={isSignedIn} toggleProfileModal={this.toggleProfileModal} onRouteChange={this.onRouteChange} />
+          <Switch>
+            <Route path="/" exact component={Dashboard} />
+            <Route path="/signin" exact component={Signin} />
+            <Route path="/register" exact component={Register} />
+          </Switch>
+
+        </Router>
+        {/* 
         {
           isProfileModalOpen &&
           <Modal isOpen={isProfileModalOpen} toggle={this.toggleProfileModal} backdrop={true} keyboard={true}>
@@ -182,25 +193,7 @@ class App extends Component {
             </ModalBody>
           </Modal>
         }
-        { route === 'home'
-          ? <div>
-            <Logo />
-            <Rank
-              name={this.state.user.name}
-              entries={this.state.user.entries}
-            />
-            <ImageLinkForm
-              onInputChange={this.onInputChange}
-              onButtonSubmit={this.onButtonSubmit}
-            />
-            <FaceRecognition boxes={boxes} imageUrl={imageUrl} />
-          </div>
-          : (
-            route === 'signin'
-              ? <Signin fetchUser={this.fetchUser}/>
-              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
-          )
-        }
+        */}
       </div>
     );
   }
