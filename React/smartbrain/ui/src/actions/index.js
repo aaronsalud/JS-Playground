@@ -1,6 +1,33 @@
-import axios from axios;
+import axios from 'axios';
 import { SET_USER } from './types';
+import setAuthHeader from '../utils/setAuthHeader';
 
-export const fetchUser = () => dispatch => {
-
+export const fetchUser = async id => {
+    try{
+        const { data } = await axios.get(`/profile/${id}`);
+        if (data) {
+            return {
+                type: SET_USER,
+                payload: data
+            }; 
+        }
+    }
+    catch(e){
+        console.log(e);
+    }
+   
 };
+
+export const signIn = (email, password) => async dispatch => {
+    try {
+        const { data } = await axios.post('/signin', { email, password });
+        window.sessionStorage.setItem('token', data.token);
+        setAuthHeader(data.token);
+        dispatch(await fetchUser(data.userId));
+          // this.onRouteChange('home');
+    }
+    catch (e) {
+        console.log(e);
+    }
+};
+
