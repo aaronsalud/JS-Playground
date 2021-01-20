@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 class Signin extends React.Component {
 
@@ -16,23 +17,18 @@ class Signin extends React.Component {
     window.sessionStorage.setItem('token', token);
   }
 
-  onSubmitSignIn = (e) => {
+  onSubmitSignIn = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/signin', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: this.state.signInEmail,
-        password: this.state.signInPassword
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          this.saveAuthTokenInSession(data.token);
-          this.props.fetchUser(data.userId, data.token);
-        }
-      })
+
+    try {
+      const { email, password } = this.state;
+      const { data } = await axios.post('/signin', { email, password });
+      this.saveAuthTokenInSession(data.token);
+      this.props.fetchUser(data.userId, data.token);
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   render() {
