@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { setImageUrl } from '../../../actions';
 import './ImageLinkForm.css';
 
 const ImageLinkForm = ({ setImageUrl }) => {
@@ -29,4 +27,4 @@ const ImageLinkForm = ({ setImageUrl }) => {
   );
 }
 
-export default connect(null, { setImageUrl })(ImageLinkForm);
+export default ImageLinkForm;
