@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { setImageUrl } from '../../../actions';
 import './ImageLinkForm.css';
 
-const ImageLinkForm = (props) => {
+const ImageLinkForm = ({ setImageUrl }) => {
 
   const [image, setImage] = useState('');
+
+  const onSubmit = () => {
+    setImageUrl(image);
+  };
 
   return (
     <div>
@@ -23,4 +29,4 @@ const ImageLinkForm = (props) => {
   );
 }
 
-export default ImageLinkForm;
+export default connect(null, { setImageUrl })(ImageLinkForm);
