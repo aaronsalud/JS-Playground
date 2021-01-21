@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './ImageLinkForm.css';
 
-const ImageLinkForm = ({ setImageUrl }) => {
+const ImageLinkForm = ({ setImageUrl, getImageRecognitionResults }) => {
 
   const [image, setImage] = useState('');
 
   const onSubmit = () => {
     setImageUrl(image);
+    getImageRecognitionResults(image);
   };
 
   return (
