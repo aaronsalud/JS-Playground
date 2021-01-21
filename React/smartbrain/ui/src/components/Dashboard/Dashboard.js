@@ -4,9 +4,8 @@ import Logo from './Logo/Logo';
 import Rank from './Rank';
 import ImageLinkForm from './ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './FaceRecognition/FaceRecognition';
-import history from '../../history';
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ user, imageUrl, boxes }) => {
 
     if (!user) {
         return <div></div>;
@@ -17,21 +16,17 @@ const Dashboard = ({ user }) => {
         <div>
             <Logo />
             <Rank name={name} entries={entries} />
-            <ImageLinkForm
-            // onInputChange={this.onInputChange}
-            // onButtonSubmit={this.onButtonSubmit}
-            />
-            {/* <FaceRecognition 
-            boxes={boxes} imageUrl={imageUrl} 
-            /> */}
+            <ImageLinkForm />
+            <FaceRecognition imageUrl={imageUrl} boxes={boxes}/>
         </div>
     );
-
 };
 
 const mapStateToProps = state => {
     return {
-        user: state.user
+        user: state.user,
+        imageUrl: state.image.url,
+        boxes: state.image.boxes
     }
 }
 
