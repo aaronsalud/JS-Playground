@@ -5,9 +5,9 @@ import Logo from './Logo/Logo';
 import Rank from './Rank';
 import ImageLinkForm from './ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './FaceRecognition/FaceRecognition';
-import { setImageUrl } from '../../actions';
+import { setImageUrl, getImageRecognitionResults } from '../../actions';
 
-const Dashboard = ({ user, imageUrl, boxes, setImageUrl }) => {
+const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResults }) => {
 
     if (!user) {
         return <div></div>;
@@ -18,7 +18,7 @@ const Dashboard = ({ user, imageUrl, boxes, setImageUrl }) => {
         <div>
             <Logo />
             <Rank name={name} entries={entries} />
-            <ImageLinkForm setImageUrl={setImageUrl} />
+            <ImageLinkForm setImageUrl={setImageUrl} getImageRecognitionResults={getImageRecognitionResults}/>
             <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
         </div>
     );
@@ -32,4 +32,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { setImageUrl })(Dashboard);
+export default connect(mapStateToProps, { setImageUrl, getImageRecognitionResults })(Dashboard);
