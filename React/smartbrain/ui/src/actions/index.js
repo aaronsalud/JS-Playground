@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL } from './types';
+import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -8,6 +8,37 @@ export const setImageUrl = (url) => {
         type: SET_IMAGE_URL,
         payload: url
     }
+};
+
+const calculateFaceLocations = (data) => {
+    return data.outputs[0].data.regions.map(face => {
+        const clarifaiFace = face.region_info.bounding_box;
+        const image = document.getElementById('inputimage');
+        const width = Number(image.width);
+        const height = Number(image.height);
+        return {
+            id: face.id,
+            leftCol: clarifaiFace.left_col * width,
+            topRow: clarifaiFace.top_row * height,
+            rightCol: width - (clarifaiFace.right_col * width),
+            bottomRow: height - (clarifaiFace.bottom_row * height)
+        }
+    });
+}
+
+export const getImageRecognitionResults = (url) => async dispatch => {
+    try {
+        const { data } = await axios.post('/imageurl', { input: url });
+
+        dispatch({
+            type: SET_IMAGE_BOXES,
+            payload: calculateFaceLocations(data)
+        });
+    }
+    catch (e) {
+        console.log(e);
+    }
+
 };
 
 const fetchUser = async id => {
