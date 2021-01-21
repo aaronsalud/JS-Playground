@@ -1,5 +1,5 @@
 
-import { SET_IMAGE_URL } from '../actions/types';
+import { SET_IMAGE_URL, SET_IMAGE_BOXES } from '../actions/types';
 
 const initialState = {
     url: null,
