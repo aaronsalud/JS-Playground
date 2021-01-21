@@ -1,9 +1,16 @@
 import axios from 'axios';
-import { SET_USER } from './types';
+import { SET_USER, SET_IMAGE_URL } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
-export const fetchUser = async id => {
+export const setImageUrl = (url) => {
+    return {
+        type: SET_IMAGE_URL,
+        payload: url
+    }
+};
+
+const fetchUser = async id => {
     try {
         const { data } = await axios.get(`/profile/${id}`);
         if (data) {
