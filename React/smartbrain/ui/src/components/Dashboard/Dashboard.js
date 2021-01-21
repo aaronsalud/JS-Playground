@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+
 import Logo from './Logo/Logo';
 import Rank from './Rank';
 import ImageLinkForm from './ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './FaceRecognition/FaceRecognition';
+import { setImageUrl } from '../../actions';
 
-const Dashboard = ({ user, imageUrl, boxes }) => {
+const Dashboard = ({ user, imageUrl, boxes, setImageUrl }) => {
 
     if (!user) {
         return <div></div>;
@@ -16,8 +18,8 @@ const Dashboard = ({ user, imageUrl, boxes }) => {
         <div>
             <Logo />
             <Rank name={name} entries={entries} />
-            <ImageLinkForm />
-            <FaceRecognition imageUrl={imageUrl} boxes={boxes}/>
+            <ImageLinkForm setImageUrl={setImageUrl} />
+            <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
         </div>
     );
 };
@@ -30,4 +32,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps)(Dashboard);
+export default connect(mapStateToProps, { setImageUrl })(Dashboard);
