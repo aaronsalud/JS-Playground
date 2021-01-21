@@ -82,10 +82,6 @@ class App extends Component {
     this.setState({ boxes });
   }
 
-  onInputChange = (event) => {
-    this.setState({ input: event.target.value });
-  }
-
   onButtonSubmit = () => {
     this.setState({ imageUrl: this.state.input });
     const token = window.sessionStorage.getItem('token');
