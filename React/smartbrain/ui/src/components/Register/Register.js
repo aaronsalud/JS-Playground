@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import history from '../../history';
 
 const Register = props => {
 
@@ -6,24 +8,18 @@ const Register = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmitRegister = (e) => {
+  const onSubmitRegister = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:3000/register', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
-        name: this.state.name
-      })
-    })
-      .then(response => response.json())
-      .then(user => {
-        if (user.id) {
-          this.props.loadUser(user)
-          // this.props.onRouteChange('home');
-        }
-      })
+
+    try {
+      const { status } = await axios.post('/register', { email, password, name });
+      if (status === 200) {
+        history.push('/signin')
+      }
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   return (
@@ -79,7 +75,6 @@ const Register = props => {
       </main>
     </article>
   );
-
 }
 
 export default Register;
