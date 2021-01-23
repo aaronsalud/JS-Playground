@@ -5,6 +5,10 @@ import history from '../../history';
 
 const Signin = ({ signIn, auth }) => {
 
+  if (window.sessionStorage.getItem('token')) {
+    history.push('/');
+  }
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -14,7 +18,7 @@ const Signin = ({ signIn, auth }) => {
   };
 
   useEffect(() => {
-    if(auth){
+    if (auth) {
       history.push('/');
     }
   }, [auth]);
@@ -60,8 +64,5 @@ const Signin = ({ signIn, auth }) => {
   );
 }
 
-const mapStateToProps = state => {
-  return { auth: state.user ? true : false }
-};
 
-export default connect(mapStateToProps, { signIn })(Signin);
+export default connect(null, { signIn })(Signin);
