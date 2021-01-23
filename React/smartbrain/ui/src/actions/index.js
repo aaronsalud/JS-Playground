@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES } from './types';
+import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -26,13 +26,25 @@ const calculateFaceLocations = (data) => {
     });
 }
 
-export const getImageRecognitionResults = (url) => async dispatch => {
+const updateUserEntries = async id => {
+    const { data } = await axios.put('/image', { id });
+    return data;
+};
+
+export const getImageRecognitionResults = (url) => async (dispatch, getState) => {
     try {
         const { data } = await axios.post('/imageurl', { input: url });
-
+        const state = getState();
+        const userId = state.user.id;
         dispatch({
             type: SET_IMAGE_BOXES,
             payload: calculateFaceLocations(data)
+        });
+
+        const updatedEntries = await updateUserEntries(userId);
+        dispatch({
+            type: UPDATE_USER_ENTRIES,
+            payload: updatedEntries
         });
     }
     catch (e) {
