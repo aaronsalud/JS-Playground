@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { signIn } from '../../actions';
+import history from '../../history';
 
-const Signin = ({ signIn }) => {
+const Signin = ({ signIn, auth }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -10,7 +11,13 @@ const Signin = ({ signIn }) => {
   const onSubmitSignIn = (e) => {
     e.preventDefault();
     signIn(email, password);
-  }
+  };
+
+  useEffect(() => {
+    if(auth){
+      history.push('/');
+    }
+  }, [auth]);
 
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -53,4 +60,8 @@ const Signin = ({ signIn }) => {
   );
 }
 
-export default connect(null, { signIn })(Signin);
+const mapStateToProps = state => {
+  return { auth: state.user ? true : false }
+};
+
+export default connect(mapStateToProps, { signIn })(Signin);
