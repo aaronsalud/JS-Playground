@@ -5,6 +5,10 @@ import history from '../history';
 const requireAuth = (ChildComponent) => {
     class ComposedComponent extends Component {
 
+        componentDidMount() {
+            this.navigateAway();
+        }
+
         componentDidUpdate() {
             this.navigateAway();
         }
@@ -20,7 +24,7 @@ const requireAuth = (ChildComponent) => {
         }
     }
     const mapStateToProps = (state) => {
-        return { auth: state.user ? true : false }
+        return { auth: window.sessionStorage.getItem('token') ? true : false }
     }
 
     return connect(mapStateToProps)(ComposedComponent);
