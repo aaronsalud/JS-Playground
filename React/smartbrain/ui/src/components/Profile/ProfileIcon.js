@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-const ProfileIcon = (props) => {
+const ProfileIcon = ({ onSignOut }) => {
     const [dropdownToggle, setDropdownToggle] = useState(false);
 
     return (
@@ -12,7 +12,7 @@ const ProfileIcon = (props) => {
                 </DropdownToggle>
                 <DropdownMenu right style={{ marginTop: '20px', backgroundColor: 'rgba(255 255 255 0.5)' }}>
                     <DropdownItem onClick={() => props.toggleProfileModal()}>View Profile</DropdownItem>
-                    <DropdownItem onClick={() => props.onRouteChange('signout')}>Signout</DropdownItem>
+                    <DropdownItem onClick={onSignOut}>Signout</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         </div>
