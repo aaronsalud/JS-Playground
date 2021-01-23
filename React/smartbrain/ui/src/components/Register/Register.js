@@ -4,6 +4,10 @@ import history from '../../history';
 
 const Register = props => {
 
+  if (window.sessionStorage.getItem('token')) {
+    history.push('/');
+  }
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
