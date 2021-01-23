@@ -88,7 +88,7 @@ export const signIn = (email, password) => async dispatch => {
 export const signOut = () => {
     window.sessionStorage.removeItem('token');
     return {
-        action: UNSET_USER
+        type: UNSET_USER
     }
 };
 
