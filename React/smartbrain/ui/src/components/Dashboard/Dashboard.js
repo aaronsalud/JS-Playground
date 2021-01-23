@@ -6,6 +6,7 @@ import Rank from './Rank';
 import ImageLinkForm from './ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './FaceRecognition/FaceRecognition';
 import { setImageUrl, getImageRecognitionResults } from '../../actions';
+import requireAuth from '../requireAuth';
 
 const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResults }) => {
 
@@ -32,4 +33,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { setImageUrl, getImageRecognitionResults })(Dashboard);
+export default connect(mapStateToProps, { setImageUrl, getImageRecognitionResults })(requireAuth(Dashboard));
