@@ -11,7 +11,7 @@ const FaceRecognition = ({ imageUrl, boxes }) => {
 
   return (
     <div className='center ma'>
-      <div className='absolute mt2'>
+      <div className='absolute pt3 pb3'>
         <img id='inputimage' alt='' src={imageUrl} width='500px' heigh='auto' />
         {renderBoxes()}
       </div>
