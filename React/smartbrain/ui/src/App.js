@@ -8,26 +8,18 @@ import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import Dashboard from './components/Dashboard/Dashboard';
+import PageNotFound from './components/PageNotFound';
 
 import { setUser } from './actions'
 import setAuthHeader from './utils/setAuthHeader';
-
 import history from './history';
+import particlesOptions from './utils/particlesOptions';
 import './App.css';
-import PageNotFound from './components/PageNotFound';
 
 class App extends Component {
 
   state = {
-    particles: {
-      number: {
-        value: 30,
-        density: {
-          enable: true,
-          value_area: 800
-        }
-      }
-    }
+    particlesOptions
   }
 
   componentDidMount() {
@@ -53,7 +45,7 @@ class App extends Component {
             <Route path="/" exact component={Dashboard} />
             <Route path="/signin" exact component={Signin} />
             <Route path="/register" exact component={Register} />
-            <Route component={PageNotFound}/>
+            <Route component={PageNotFound} />
           </Switch>
         </Router>
       </div>
