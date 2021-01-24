@@ -3,13 +3,11 @@ import Particles from 'react-particles-js';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import jwt_decode from 'jwt-decode';
-import { Modal, ModalHeader, ModalBody } from 'reactstrap';
 
 import Navigation from './components/Navigation/Navigation';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import Dashboard from './components/Dashboard/Dashboard';
-import ProfileSummary from './components/Profile/ProfileSummary';
 
 import { setUser } from './actions'
 import setAuthHeader from './utils/setAuthHeader';
@@ -40,10 +38,6 @@ class App extends Component {
       const { sub } = jwt_decode(token);
       this.props.setUser(sub);
     }
-  }
-
-  toggleProfileModal = () => {
-    this.setState({ isProfileModalOpen: !this.state.isProfileModalOpen });
   }
 
   render() {
