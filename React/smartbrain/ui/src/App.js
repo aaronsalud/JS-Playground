@@ -16,6 +16,7 @@ import setAuthHeader from './utils/setAuthHeader';
 
 import history from './history';
 import './App.css';
+import PageNotFound from './components/PageNotFound';
 
 class App extends Component {
 
@@ -49,7 +50,6 @@ class App extends Component {
     const { particlesOptions } = this.state;
     return (
       <div className="App">
-
         <Router history={history}>
           <Particles className='particles'
             params={particlesOptions}
@@ -59,20 +59,9 @@ class App extends Component {
             <Route path="/" exact component={Dashboard} />
             <Route path="/signin" exact component={Signin} />
             <Route path="/register" exact component={Register} />
+            <Route component={PageNotFound}/>
           </Switch>
-
         </Router>
-        {/* 
-        {
-          isProfileModalOpen &&
-          <Modal isOpen={isProfileModalOpen} toggle={this.toggleProfileModal} backdrop={true} keyboard={true}>
-            <ModalHeader toggle={this.toggleProfileModal}>Profile Summary</ModalHeader>
-            <ModalBody>
-              <ProfileSummary user={user} />
-            </ModalBody>
-          </Modal>
-        }
-        */}
       </div>
     );
   }
