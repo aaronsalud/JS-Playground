@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { signOut } from '../../actions';
+import { signOut, toggleProfileModal } from '../../actions';
 import ProfileIcon from '../Profile/ProfileIcon';
 
-const Navigation = ({ signOut, auth }) => {
+const Navigation = ({ signOut, toggleProfileModal, auth }) => {
 
   const onSignOut = () => {
     signOut();
@@ -13,7 +13,7 @@ const Navigation = ({ signOut, auth }) => {
   if (auth) {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <ProfileIcon onSignOut={onSignOut} />
+        <ProfileIcon onSignOut={onSignOut} toggleProfileModal={toggleProfileModal} />
       </nav>
     );
   }
@@ -30,4 +30,4 @@ const mapStateToProps = state => {
     auth: state.user ? true : false
   }
 }
-export default connect(mapStateToProps, { signOut })(Navigation);
+export default connect(mapStateToProps, { signOut, toggleProfileModal })(Navigation);
