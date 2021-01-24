@@ -18,19 +18,24 @@ const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResu
 
     const { name, entries } = user;
 
-    return (
-        <div>
-            <Logo />
-            <Rank name={name} entries={entries} />
-            <ImageLinkForm setImageUrl={setImageUrl} getImageRecognitionResults={getImageRecognitionResults} />
-            <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
-
+    const renderProfileModal = () => {
+        return (
             <Modal isOpen={isProfileModalOpen} toggle={toggleProfileModal} backdrop={true} keyboard={true}>
                 <ModalHeader toggle={toggleProfileModal}>Profile Summary</ModalHeader>
                 <ModalBody>
                     <ProfileSummary user={user} />
                 </ModalBody>
             </Modal>
+        );
+    };
+
+    return (
+        <div>
+            <Logo />
+            <Rank name={name} entries={entries} />
+            <ImageLinkForm setImageUrl={setImageUrl} getImageRecognitionResults={getImageRecognitionResults} />
+            <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
+            {renderProfileModal()}
         </div>
     );
 };
