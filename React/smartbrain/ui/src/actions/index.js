@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER } from './types';
+import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -91,4 +91,10 @@ export const signOut = () => {
         type: UNSET_USER
     }
 };
+
+export const toggleProfileModal = () => {
+    return {
+        type: PROFILE_MODAL_TOGGLE
+    }
+}
 
