@@ -5,7 +5,8 @@ const ImageLinkForm = ({ setImageUrl, getImageRecognitionResults }) => {
 
   const [image, setImage] = useState('');
 
-  const onSubmit = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     setImageUrl(image);
     getImageRecognitionResults(image);
   };
