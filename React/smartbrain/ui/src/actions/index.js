@@ -53,26 +53,25 @@ export const getImageRecognitionResults = (url) => async (dispatch, getState) =>
 
 };
 
-const fetchUser = async id => {
+const fetchUser = async (id, dispatch) => {
     try {
         const { data } = await axios.get(`/profile/${id}`);
         if (data) {
-            return {
+            dispatch({
                 type: SET_USER,
                 payload: data
-            };
+            });
         }
     }
     catch (e) {
+        dispatch({ type: UNSET_USER });
         window.sessionStorage.removeItem('token');
-        return {
-            type: UNSET_USER
-        }
+        history.push('/signin');
     }
 };
 
 export const setUser = (id) => async dispatch => {
-    dispatch(await fetchUser(id));
+    fetchUser(id, dispatch);
 }
 
 export const signIn = (email, password) => async dispatch => {
@@ -80,7 +79,7 @@ export const signIn = (email, password) => async dispatch => {
         const { data } = await axios.post('/signin', { email, password });
         window.sessionStorage.setItem('token', data.token);
         setAuthHeader(data.token);
-        dispatch(await fetchUser(data.userId));
+        fetchUser(data.userId, dispatch);
         history.push('/');
     }
     catch (e) {
