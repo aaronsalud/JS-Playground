@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { signOut, toggleProfileModal } from '../../actions';
 import ProfileIcon from '../Profile/ProfileIcon';
 
-const Navigation = ({ signOut, toggleProfileModal, auth }) => {
+const Navigation = ({ signOut, toggleProfileModal, auth, userImage }) => {
 
   const onSignOut = () => {
     signOut();
@@ -13,7 +13,7 @@ const Navigation = ({ signOut, toggleProfileModal, auth }) => {
   if (auth) {
     return (
       <nav style={{ display: 'flex', justifyContent: 'flex-end' }}>
-        <ProfileIcon onSignOut={onSignOut} toggleProfileModal={toggleProfileModal} />
+        <ProfileIcon onSignOut={onSignOut} toggleProfileModal={toggleProfileModal} userImage={userImage}/>
       </nav>
     );
   }
@@ -27,7 +27,8 @@ const Navigation = ({ signOut, toggleProfileModal, auth }) => {
 
 const mapStateToProps = state => {
   return {
-    auth: state.user ? true : false
+    auth: state.user ? true : false,
+    userImage: state && state.user ? state.user.profile_image : ''
   }
 }
 export default connect(mapStateToProps, { signOut, toggleProfileModal })(Navigation);
