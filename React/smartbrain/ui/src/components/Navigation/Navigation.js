@@ -28,7 +28,7 @@ const Navigation = ({ signOut, toggleProfileModal, auth, userImage }) => {
 const mapStateToProps = state => {
   return {
     auth: state.user ? true : false,
-    userImage: state && state.user ? state.user.profile_image : ''
+    userImage: state.user && state.user.profile_image
   }
 }
 export default connect(mapStateToProps, { signOut, toggleProfileModal })(Navigation);
