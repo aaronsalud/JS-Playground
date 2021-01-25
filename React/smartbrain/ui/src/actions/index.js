@@ -64,7 +64,10 @@ const fetchUser = async id => {
         }
     }
     catch (e) {
-        console.log(e);
+        window.sessionStorage.removeItem('token');
+        return {
+            type: UNSET_USER
+        }
     }
 };
 
