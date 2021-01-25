@@ -1,0 +1,12 @@
+BEGIN TRANSACTION;
+
+CREATE TABLE images (
+    id serial PRIMARY KEY,
+    url TEXT,
+    user_id INT NOT NULL,
+    FOREIGN KEY (user_id)
+      REFERENCES users (id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMIT;
