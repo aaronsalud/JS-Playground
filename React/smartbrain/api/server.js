@@ -30,6 +30,7 @@ app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcry
 app.get('/profile/:id', requireAuth,(req, res) => { profile.handleProfileGet(req, res, db) })
 app.put('/image', requireAuth, (req, res) => { image.handleImage(req, res, db) })
 app.post('/imageurl', requireAuth,(req, res) => { image.handleApiCall(req, res) })
+app.get('/images', (req, res) => { image.getUserImages(req, res, db) });
 
 app.listen(5000, () => {
   console.log('app is running on port 5000');
