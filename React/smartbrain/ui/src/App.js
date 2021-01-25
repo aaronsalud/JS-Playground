@@ -25,7 +25,11 @@ class App extends Component {
   componentDidMount() {
     const token = window.sessionStorage.getItem('token');
 
-    if (token) {
+    if (!token) {
+      history.push('/signin');
+    }
+
+    else {
       setAuthHeader(token);
       const { sub } = jwt_decode(token);
       this.props.setUser(sub);
