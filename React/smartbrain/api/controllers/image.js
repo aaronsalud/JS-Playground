@@ -36,9 +36,8 @@ const handleImage = (req, res, db) => {
 }
 
 const getUserImages = async (req, res, db) => {
-
   try {
-    const images = await db.select('*').from('imagess').where({ id: 1 });
+    const images = await db.select('*').from('images').where({ id: 1 });
     res.status(200).json(images);
   }
   catch (e) {
