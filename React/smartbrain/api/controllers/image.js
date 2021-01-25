@@ -1,4 +1,5 @@
 const Clarifai = require('clarifai');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 //You must add your own API key here from Clarifai. 
@@ -36,8 +37,10 @@ const handleImage = (req, res, db) => {
 }
 
 const getUserImages = async (req, res, db) => {
+  const { authorization } = req.headers;
+  const userId = jwt.decode(authorization).sub;
   try {
-    const images = await db.select('*').from('images').where({ id: 1 });
+    const images = await db.select('*').from('images').where({ id: userId });
     res.status(200).json(images);
   }
   catch (e) {
