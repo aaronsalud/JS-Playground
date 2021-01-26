@@ -22,7 +22,7 @@ const createSession = async user => {
   }
 }
 
-const handleSignin = async (db, req, res) => {
+const signinAuthentication = async (db, req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) return res.status(404).json({ error: "Invalid auth credentials" });
@@ -43,10 +43,6 @@ const handleSignin = async (db, req, res) => {
 
 const signToken = id => jwt.sign({ sub: id }, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
 const setToken = async (token, id) => await redisClient.set(token, id);
-
-const signinAuthentication = (db, req, res) => {
-  handleSignin(db, req, res);
-}
 
 module.exports = {
   signinAuthentication,
