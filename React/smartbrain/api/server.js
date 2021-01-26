@@ -25,7 +25,7 @@ app.use(cors())
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => { res.send(db.users) })
-app.post('/signin', (req, res) => signin.signinAuthentication(db, req, res));
+app.post('/signin', (req, res) => signin.signinAuthentication(req, res, db));
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', requireAuth, (req, res) => { profile.getUserProfile(req, res, db) })
 app.put('/image', requireAuth, (req, res) => { image.handleImage(req, res, db) })

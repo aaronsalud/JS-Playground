@@ -14,15 +14,13 @@ const createSession = async user => {
     const result = setToken(token, id);
 
     if (!result) return { error: 'An error has occured when signing in - Please contact your admin' };
-
+    
     return { success: true, userId: id, token };
   }
-  catch (e) {
-    return { error: 'An error has occured when signing in - Please contact your admin' };
-  }
+  catch (e) { return { error: 'An error has occured when signing in - Please contact your admin' }; }
 }
 
-const signinAuthentication = async (db, req, res) => {
+const signinAuthentication = async (req, res, db) => {
   const { email, password } = req.body;
 
   if (!email || !password) return res.status(404).json({ error: "Invalid auth credentials" });
@@ -36,9 +34,7 @@ const signinAuthentication = async (db, req, res) => {
     const result = await createSession(users[0]);
     return res.status(200).json(result);
   }
-  catch (e) {
-    return res.status(404).json({ error: "Invalid auth credentials" });
-  }
+  catch (e) { return res.status(404).json({ error: "Invalid auth credentials" }); }
 }
 
 const signToken = id => jwt.sign({ sub: id }, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
