@@ -27,7 +27,7 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => { res.send(db.users) })
 app.post('/signin', (req, res) => signin.signinAuthentication(db, req, res));
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
-app.get('/profile/:id', requireAuth, (req, res) => { profile.handleProfileGet(req, res, db) })
+app.get('/profile/:id', requireAuth, (req, res) => { profile.getUserProfile(req, res, db) })
 app.put('/image', requireAuth, (req, res) => { image.handleImage(req, res, db) })
 app.post('/imageurl', requireAuth, (req, res) => { image.handleApiCall(req, res) })
 app.get('/images', requireAuth, (req, res) => { image.getUserImages(req, res, db) });
