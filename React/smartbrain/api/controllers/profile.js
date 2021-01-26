@@ -5,20 +5,17 @@ const generateGravatarImage = email => {
   return `https://www.gravatar.com/avatar/${md5Hash}`;
 }
 
-const handleProfileGet = (req, res, db) => {
+const getUserProfile = async (req, res, db) => {
   const { id } = req.params;
-  db.select('*').from('users').where({ id })
-    .then(user => {
-      if (user.length) {
-        let userData = { ...user[0], profile_image: generateGravatarImage(user[0].email) };
-        res.json(userData)
-      } else {
-        res.status(400).json('Not found')
-      }
-    })
-    .catch(err => res.status(400).json('error getting user'))
+
+  try {
+    const users = await db.select('*').from('users').where({ id });
+    const userData = { ...users[0], profile_image: generateGravatarImage(users[0].email) };
+    return res.json(userData);
+  }
+  catch (e) { res.status(404).json({ error: 'User info not found' }) };
 }
 
 module.exports = {
-  handleProfileGet
+  getUserProfile
 }
