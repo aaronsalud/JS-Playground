@@ -6,13 +6,6 @@ require('dotenv').config();
 //Setup Redis
 const redisClient = redis.createClient(process.env.REDIS_URI);
 
-const signToken = id => {
-  const jwtPayload = { sub: id };
-  return jwt.sign(jwtPayload, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
-}
-
-const setToken = async (token, id) => await redisClient.set(token, id);
-
 const createSession = async user => {
   const { id } = user;
   const token = signToken(id);
@@ -47,6 +40,9 @@ const handleSignin = async (db, req, res) => {
     return res.status(404).json({ error: "Invalid auth credentials" });
   }
 }
+
+const signToken = id => jwt.sign({ sub: id }, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
+const setToken = async (token, id) => await redisClient.set(token, id);
 
 const signinAuthentication = (db, req, res) => {
   handleSignin(db, req, res);
