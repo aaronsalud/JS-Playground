@@ -1,31 +1,10 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt-nodejs');
 const redis = require('redis');
 require('dotenv').config();
 
 //Setup Redis
 const redisClient = redis.createClient(process.env.REDIS_URI);
-
-const handleSignin = (db, bcrypt, req, res) => {
-  const { email, password } = req.body;
-  if (!email || !password) {
-    return Promise.reject('incorrect form submission');
-  }
-
-  return db.select('email', 'hash').from('login')
-    .where('email', '=', email)
-    .then(data => {
-      const isValid = bcrypt.compareSync(password, data[0].hash);
-      if (isValid) {
-        return db.select('*').from('users')
-          .where('email', '=', email)
-          .then(user => user[0])
-          .catch(err => Promise.reject('unable to get user'))
-      } else {
-        Promise.reject('wrong credentials')
-      }
-    })
-    .catch(err => Promise.reject('wrong credentials'))
-}
 
 const getAuthTokenId = (req, res) => {
   const { authorization } = req.headers;
@@ -43,26 +22,52 @@ const signToken = id => {
   return jwt.sign(jwtPayload, process.env.JWT_SECRET_KEY, { expiresIn: '2 days' });
 }
 
-const setToken = (token, id) => {
-  return Promise.resolve(redisClient.set(token, id));
+const setToken = async (token, id) => {
+  return await redisClient.set(token, id);
 }
 
-const createSession = user => {
+const createSession = async user => {
   const { id } = user;
   const token = signToken(id);
 
-  return setToken(token, id)
-    .then(() => ({ success: true, userId: id, token }))
-    .catch((err) => console.log(err));
+  try {
+    const result = setToken(token, id);
+    if (!result) {
+      return { error: 'An error has occured when signing in - Please contact your admin' };
+    }
+    return { success: true, userId: id, token };
+  }
+  catch (e) {
+    return { error: 'An error has occured when signing in - Please contact your admin' };
+  }
 }
 
-const signinAuthentication = (db, bcrypt) => (req, res) => {
-  const { authorization } = req.headers;
-  return authorization ? getAuthTokenId(req, res) :
-    handleSignin(db, bcrypt, req, res)
-      .then(data => data.id && data.email ? createSession(data) : Promise.reject(data))
-      .then(session => res.json(session))
-      .catch(err => res.status(400).json(err));
+const handleSignin = async (db, req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(404).json({ error: "Invalid auth credentials" });
+  }
+
+  try {
+    const users = await db.select('*').from('users').where('email', '=', email);
+    const isValid = bcrypt.compareSync(password, users[0].password);
+
+    if (!isValid) {
+      return res.status(404).json({ error: "Invalid auth credentials" });
+    }
+
+    const result = await createSession(users[0]);
+
+    return res.status(200).json(result);
+  }
+  catch (e) {
+    return res.status(404).json({ error: "Invalid auth credentials" });
+  }
+}
+
+const signinAuthentication = (db, req, res) => {
+  handleSignin(db, req, res);
 }
 
 module.exports = {
