@@ -74,13 +74,17 @@ export const setUser = (id) => async dispatch => {
     fetchUser(id, dispatch);
 }
 
+const handleAuthRedirect = (data, dispatch) => {
+    window.sessionStorage.setItem('token', data.token);
+    setAuthHeader(data.token);
+    fetchUser(data.userId, dispatch);
+    history.push('/');
+};
+
 export const signIn = (email, password) => async dispatch => {
     try {
         const { data } = await axios.post('/signin', { email, password });
-        window.sessionStorage.setItem('token', data.token);
-        setAuthHeader(data.token);
-        fetchUser(data.userId, dispatch);
-        history.push('/');
+        handleAuthRedirect(data, dispatch);
     }
     catch (e) {
         console.log(e);
@@ -93,6 +97,16 @@ export const signOut = () => {
         type: UNSET_USER
     }
 };
+
+export const register = (email, password, name) => async dispatch => {
+    try {
+        const { data } = await axios.post('/register', { email, password, name });
+        handleAuthRedirect(data, dispatch);
+    }
+    catch (e) {
+        console.log(e);
+    }
+}
 
 export const toggleProfileModal = () => {
     return {
