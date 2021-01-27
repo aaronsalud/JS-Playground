@@ -6,11 +6,11 @@ const generateGravatarImage = email => {
 }
 
 const getUserProfile = async (req, res, db) => {
-  const { id } = req.params;
 
   try {
-    const users = await db.select('*').from('users').where({ id });
-    const userData = { ...users[0], profile_image: generateGravatarImage(users[0].email) };
+    const users = await db.select('*').from('users').where({ id: req.params.id });
+    const { id, name, email, entries, joined } = users[0];
+    const userData = { id, name, email, entries, profile_image: generateGravatarImage(email), joined, };
     return res.json(userData);
   }
   catch (e) { res.status(404).json({ error: 'User info not found' }) };
