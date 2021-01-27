@@ -70,9 +70,7 @@ const fetchUser = async (id, dispatch) => {
     }
 };
 
-export const setUser = (id) => async dispatch => {
-    fetchUser(id, dispatch);
-}
+export const setUser = (id) => async dispatch => fetchUser(id, dispatch);
 
 const handleAuthRedirect = (data, dispatch) => {
     window.sessionStorage.setItem('token', data.token);
@@ -98,7 +96,7 @@ export const signOut = () => {
     }
 };
 
-export const register = (email, password, name) => async dispatch => {
+export const register = (name, email, password) => async dispatch => {
     try {
         const { data } = await axios.post('/register', { email, password, name });
         handleAuthRedirect(data, dispatch);
