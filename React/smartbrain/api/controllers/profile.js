@@ -10,8 +10,8 @@ const getUserProfile = async (req, res, db) => {
   try {
     const users = await db.select('*').from('users').where({ id: req.params.id });
     const { id, name, email, entries, joined } = users[0];
-    const userData = { id, name, email, entries, profile_image: generateGravatarImage(email), joined, };
-    return res.json(userData);
+    const profileData = { id, name, email, entries, profile_image: generateGravatarImage(email), joined, };
+    return res.json(profileData);
   }
   catch (e) { res.status(404).json({ error: 'User info not found' }) };
 }
