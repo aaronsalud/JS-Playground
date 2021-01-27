@@ -6,15 +6,14 @@ const handleRegister = async (req, res, db) => {
     return res.status(400).json('All input fields are required');
   }
 
-  const userExist = await db.select('*').from('users').where('email', '=', email);
+  const users = await db.select('*').from('users').where('email', '=', email);
 
-  if (userExist.length === 1) {
+  if (users && users.length) {
     return res.status(400).json({ error: 'User already exists' });
   }
 
-  const hash = bcrypt.hashSync(password);
-
   try {
+    const hash = bcrypt.hashSync(password);
     const user = await db('users').insert({ email, name, password: hash, joined: new Date() }).returning(['name', 'email', 'joined']);
     return res.status(404).json(user);
   }
