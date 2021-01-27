@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import history from '../../history';
+import { register } from '../../actions';
 
-const Register = props => {
+const Register = ({ register }) => {
 
   if (window.sessionStorage.getItem('token')) {
     history.push('/');
@@ -14,17 +15,8 @@ const Register = props => {
 
   const onSubmitRegister = async (e) => {
     e.preventDefault();
-
-    try {
-      const { status } = await axios.post('/register', { email, password, name });
-      if (status === 200) {
-        history.push('/signin')
-      }
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
+    register(name, email, password);
+  };
 
   return (
     <article className="br3 ba b--black-10 mv4 w-100 w-50-m w-25-l mw6 shadow-5 center">
@@ -81,4 +73,4 @@ const Register = props => {
   );
 }
 
-export default Register;
+export default connect(null, { register })(Register);
