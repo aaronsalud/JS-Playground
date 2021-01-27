@@ -19,7 +19,7 @@ const handleRegister = async (req, res, db) => {
     return res.status(404).json(user);
   }
   catch (e) {
-    return res.status(400).json({ error: 'Failed to create and account' })
+    return res.status(400).json({ error: 'Failed to create and account - Please contact your admin' })
   }
 }
 
