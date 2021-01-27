@@ -14,7 +14,7 @@ const handleRegister = async (req, res, db) => {
     const hash = bcrypt.hashSync(password);
     const users = await db('users').insert({ email, name, password: hash, joined: new Date() }).returning(['id']);
     const result = await createSession(users[0]);
-    return res.status(404).json(result);
+    return res.json(result);
   }
   catch (e) { return res.status(400).json({ error: 'Failed to create and account - Please contact your admin' }) }
 }
