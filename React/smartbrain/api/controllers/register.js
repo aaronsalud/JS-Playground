@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt-nodejs');
+const { createSession } = require('./authorization');
 
 const handleRegister = async (req, res, db) => {
   const { email, name, password } = req.body;
@@ -11,8 +12,9 @@ const handleRegister = async (req, res, db) => {
 
   try {
     const hash = bcrypt.hashSync(password);
-    const user = await db('users').insert({ email, name, password: hash, joined: new Date() }).returning(['name', 'email', 'joined']);
-    return res.status(404).json(user);
+    const users = await db('users').insert({ email, name, password: hash, joined: new Date() }).returning(['id']);
+    const result = await createSession(users[0]);
+    return res.status(404).json(result);
   }
   catch (e) { return res.status(400).json({ error: 'Failed to create and account - Please contact your admin' }) }
 }
