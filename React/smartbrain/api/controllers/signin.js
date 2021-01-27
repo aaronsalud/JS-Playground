@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt-nodejs');
-const createSession = require('./authorization').createSession;
+const { createSession } = require('./authorization');
 require('dotenv').config();
 
 const signinAuthentication = async (req, res, db) => {
