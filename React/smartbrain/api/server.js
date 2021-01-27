@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
 const morgan = require('morgan');
@@ -27,7 +26,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => { res.send(db.users) })
 app.post('/signin', (req, res) => signin.signinAuthentication(req, res, db));
-app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
+app.post('/register', (req, res) => { register.handleRegister(req, res, db) })
 app.get('/profile/:id', requireAuth, (req, res) => { profile.getUserProfile(req, res, db) })
 app.put('/image', requireAuth, (req, res) => { image.handleImage(req, res, db) })
 app.post('/imageurl', requireAuth, (req, res) => { image.handleApiCall(req, res) })
