@@ -7,33 +7,37 @@ const app = new Clarifai.App({
   apiKey: process.env.CLARIFAI_API_KEY
 });
 
-const handleApiCall = (req, res) => {
-  app.models
-    // HEADS UP! Sometimes the Clarifai Models can be down or not working as they are constantly getting updated.
-    // A good way to check if the model you are using is up, is to check them on the clarifai website. For example,
-    // for the Face Detect Mode: https://www.clarifai.com/models/face-detection
-    // If that isn't working, then that means you will have to wait until their servers are back up. Another solution
-    // is to use a different version of their model that works like: `c0c0ac362b03416da06ab3fa36fb58e3`
-    // so you would change from:
-    // .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-    // to:
-    // .predict('c0c0ac362b03416da06ab3fa36fb58e3', req.body.input)
-    .predict(Clarifai.FACE_DETECT_MODEL, req.body.input)
-    .then(data => {
-      res.json(data);
-    })
-    .catch(err => res.status(400).json('unable to work with API'))
+const handleImageRecognitionAnalysis = async (req, res, db) => {
+  const { authorization } = req.headers;
+  const userId = jwt.decode(authorization).sub;
+
+  const { url } = req.body;
+
+  try {
+    const imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
+    const entries = await updateUserImageEntries(userId, url, db);
+
+    if (entries.error) {
+      return res.status(400).json(entries);
+    }
+
+    const responseData = { entries, image_analysis_results: imageAnalysisResults };
+    return res.json(responseData);
+  }
+  catch (e) {
+    return res.status(400).json({ error: 'Failed to analyze image' });
+  }
 }
 
-const handleImage = (req, res, db) => {
-  const { id } = req.body;
-  db('users').where('id', '=', id)
-    .increment('entries', 1)
-    .returning('entries')
-    .then(entries => {
-      res.json(entries[0]);
-    })
-    .catch(err => res.status(400).json('unable to get entries'))
+const updateUserImageEntries = async (id, url, db) => {
+  try {
+    await db('images').insert({ url, user_id: id });
+    const entries = await db('users').where('id', '=', id).increment('entries', 1).returning('entries');
+    return entries[0];
+  }
+  catch (e) {
+    return Promise.resolve({ error: "Failed to update user entries" });
+  }
 }
 
 const getUserImages = async (req, res, db) => {
@@ -41,7 +45,7 @@ const getUserImages = async (req, res, db) => {
   const userId = jwt.decode(authorization).sub;
   try {
     const images = await db.select('*').from('images').where({ id: userId });
-    res.status(200).json(images);
+    res.json(images);
   }
   catch (e) {
     res.status(404).json({ error: "No images found for this user" });
@@ -49,7 +53,6 @@ const getUserImages = async (req, res, db) => {
 };
 
 module.exports = {
-  handleImage,
-  handleApiCall,
+  handleImageRecognitionAnalysis,
   getUserImages
 }
