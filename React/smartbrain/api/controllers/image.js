@@ -44,7 +44,7 @@ const getUserImages = async (req, res, db) => {
   const { authorization } = req.headers;
   const userId = jwt.decode(authorization).sub;
   try {
-    const images = await db.select('*').from('images').where({ id: userId });
+    const images = await db.select('*').from('images').where({ user_id: userId });
     res.json(images);
   }
   catch (e) {
