@@ -29,8 +29,6 @@ const calculateFaceLocations = (data) => {
 export const getImageRecognitionResults = url => async dispatch => {
     try {
         const { data } = await axios.post('/image', { url });
-        console.log(data);
-
         dispatch({
             type: SET_IMAGE_BOXES,
             payload: calculateFaceLocations(data.image_analysis_results)
@@ -44,7 +42,6 @@ export const getImageRecognitionResults = url => async dispatch => {
     catch (e) {
         console.log(e);
     }
-
 };
 
 const fetchUser = async (id, dispatch) => {
