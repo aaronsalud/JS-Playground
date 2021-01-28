@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import history from '../../history';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 
-const ProfileIcon = ({ onSignOut, toggleProfileModal, userImage }) => {
+const ProfileIcon = ({ onSignOut, userImage }) => {
     const [dropdownToggle, setDropdownToggle] = useState(false);
 
     return (
@@ -11,7 +12,8 @@ const ProfileIcon = ({ onSignOut, toggleProfileModal, userImage }) => {
                     <img src={userImage} className="br-100 ba h3 w3 dib" alt="avatar" />
                 </DropdownToggle>
                 <DropdownMenu right style={{ marginTop: '20px', backgroundColor: 'rgba(255 255 255 0.5)' }}>
-                    <DropdownItem onClick={toggleProfileModal}>View Profile</DropdownItem>
+                    <DropdownItem onClick={() => history.push('/')}>Dashboard</DropdownItem>
+                    <DropdownItem onClick={() => history.push('/profile')}>View Profile</DropdownItem>
                     <DropdownItem onClick={onSignOut}>Signout</DropdownItem>
                 </DropdownMenu>
             </Dropdown>
