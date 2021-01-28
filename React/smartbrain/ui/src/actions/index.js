@@ -26,26 +26,20 @@ const calculateFaceLocations = (data) => {
     });
 }
 
-const updateUserEntries = async id => {
-    const { data } = await axios.put('/image', { id });
-    return data;
-};
-
-export const getImageRecognitionResults = (url) => async (dispatch, getState) => {
+export const getImageRecognitionResults = url => async dispatch => {
     try {
-        const { data } = await axios.post('/imageurl', { input: url });
-        const state = getState();
-        const userId = state.user.id;
+        const { data } = await axios.post('/image', { url });
+        console.log(data);
+
         dispatch({
             type: SET_IMAGE_BOXES,
-            payload: calculateFaceLocations(data)
+            payload: calculateFaceLocations(data.image_analysis_results)
         });
 
-        const updatedEntries = await updateUserEntries(userId);
         dispatch({
             type: UPDATE_USER_ENTRIES,
-            payload: updatedEntries
-        });
+            payload: data.entries
+        })
     }
     catch (e) {
         console.log(e);
