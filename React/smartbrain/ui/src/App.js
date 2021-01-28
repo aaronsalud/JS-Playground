@@ -9,6 +9,7 @@ import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import Dashboard from './components/Dashboard/Dashboard';
 import PageNotFound from './components/PageNotFound';
+import ProfileSummary from './components/Profile/ProfileSummary';
 
 import { setUser } from './actions'
 import setAuthHeader from './utils/setAuthHeader';
@@ -40,11 +41,13 @@ class App extends Component {
           <Particles className='particles'
             params={particlesOptions}
           />
-          <Navigation toggleProfileModal={this.toggleProfileModal} />
+          <Navigation />
           <Switch>
             <Route path="/" exact component={Dashboard} />
             <Route path="/signin" exact component={Signin} />
             <Route path="/register" exact component={Register} />
+            <Route path="/profile" exact component={ProfileSummary} />
+
             <Route component={PageNotFound} />
           </Switch>
         </Router>
