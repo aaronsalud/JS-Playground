@@ -13,7 +13,7 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
 
   const { url } = req.body;
 
-  const userAlreadyPostedImage = await db('images').join('users_images', 'images.id', '=', 'users_images.image_id')
+  const userAlreadyPostedImage = await db('images').first().join('users_images', 'images.id', '=', 'users_images.image_id')
     .join('users', 'users.id', '=', 'users_images.user_id').where('url', '=', url).returning(['entries', 'anaylsis_results']);
 
   if (!userAlreadyPostedImage) {
@@ -33,7 +33,7 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
     }
   }
 
-  return res.json({ entries: userAlreadyPostedImage[0].entries, image_analysis_results: userAlreadyPostedImage[0].analysis_results });
+  return res.json({ entries: userAlreadyPostedImage.entries, image_analysis_results: userAlreadyPostedImage.analysis_results });
 }
 
 const updateUserImageEntries = async (id, url, analysis_results, db) => {
