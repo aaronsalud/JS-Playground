@@ -38,10 +38,10 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
 
 const updateUserImageEntries = async (id, url, analysis_results, db) => {
   try {
-    const imageIds = await db('images').insert({ url, analysis_results }).returning('id');
-    await db('users_images').insert({ user_id: id, image_id: imageIds[0] });
-    const entries = await db('users').where('id', '=', id).increment('entries', 1).returning('entries');
-    return entries[0];
+    const imageId = await db('images').first().insert({ url, analysis_results }).returning('id');
+    await db('users_images').first().insert({ user_id: id, image_id: imageId });
+    const entries = await db('users').first().where('id', '=', id).increment('entries', 1).returning('entries');
+    return entries;
   }
   catch (e) {
     return Promise.resolve({ error: "Failed to update user entries" });
