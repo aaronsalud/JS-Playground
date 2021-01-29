@@ -8,17 +8,19 @@ const signinAuthentication = async (req, res, db) => {
   if (!email || !password) return res.status(404).json({ error: "Invalid auth credentials" })
 
   try {
-    const users = await db.select('*').from('users').where('email', '=', email);
+    const user = await db('users').select('id', 'password').first().where('email', email);
 
-    const isValid = bcrypt.compareSync(password, users[0].password);
+    if (!user) throw "Invalid auth credentials";
+ 
+    const isValid = bcrypt.compareSync(password, user.password);
 
-    if (!isValid) return res.status(404).json({ error: "Invalid auth credentials" });
+    if (!isValid) throw "Invalid auth credentials"
 
-    const result = await createSession(users[0]);
+    const result = createSession(user.id);
 
     return res.status(200).json(result);
   }
-  catch (e) { return res.status(404).json({ error: "Invalid auth credentials" }); }
+  catch (e) { return res.status(404).json({ error: e }); }
 }
 
 module.exports = {
