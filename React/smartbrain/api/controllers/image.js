@@ -13,25 +13,32 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
 
   const { url } = req.body;
 
-  try {
-    const imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
-    const entries = await updateUserImageEntries(userId, url, db);
+  const userAlreadyPostedImage = await db('images').join('users_images', 'images.id', '=', 'users_images.image_id')
+    .join('users', 'users.id', '=', 'users_images.user_id').where('url', '=', url).returning(['entries', 'anaylsis_results']);
 
-    if (entries.error) {
-      return res.status(400).json(entries);
+  if (!userAlreadyPostedImage) {
+    try {
+      const imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
+      const entries = await updateUserImageEntries(userId, url, imageAnalysisResults, db);
+
+      if (entries.error) {
+        return res.status(400).json(entries);
+      }
+
+      const responseData = { entries, image_analysis_results: imageAnalysisResults };
+      return res.json(responseData);
     }
+    catch (e) {
+      return res.status(400).json({ error: 'Failed to analyze image' });
+    }
+  }
 
-    const responseData = { entries, image_analysis_results: imageAnalysisResults };
-    return res.json(responseData);
-  }
-  catch (e) {
-    return res.status(400).json({ error: 'Failed to analyze image' });
-  }
+  return res.json({ entries: userAlreadyPostedImage[0].entries, image_analysis_results: userAlreadyPostedImage[0].analysis_results });
 }
 
-const updateUserImageEntries = async (id, url, db) => {
+const updateUserImageEntries = async (id, url, analysis_results, db) => {
   try {
-    const imageIds = await db('images').insert({ url }).returning('id');
+    const imageIds = await db('images').insert({ url, analysis_results }).returning('id');
     await db('users_images').insert({ user_id: id, image_id: imageIds[0] });
     const entries = await db('users').where('id', '=', id).increment('entries', 1).returning('entries');
     return entries[0];
