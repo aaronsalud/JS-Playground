@@ -31,7 +31,8 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
 
 const updateUserImageEntries = async (id, url, db) => {
   try {
-    await db('images').insert({ url, user_id: id });
+    const imageIds = await db('images').insert({ url }).returning('id');
+    await db('users_images').insert({ user_id: id, image_id: imageIds[0] });
     const entries = await db('users').where('id', '=', id).increment('entries', 1).returning('entries');
     return entries[0];
   }
