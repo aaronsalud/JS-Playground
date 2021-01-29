@@ -21,12 +21,9 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
       const imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
       const entries = await updateUserImageEntries(userId, url, imageAnalysisResults, db);
 
-      if (entries.error) {
-        return res.status(400).json(entries);
-      }
+      if (!entries) return res.status(400).json(entries);
 
-      const responseData = { entries, image_analysis_results: imageAnalysisResults };
-      return res.json(responseData);
+      return res.json({ entries, image_analysis_results: imageAnalysisResults });
     }
     catch (e) {
       return res.status(400).json({ error: 'Failed to analyze image' });
