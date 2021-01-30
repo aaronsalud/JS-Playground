@@ -15,6 +15,8 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
 
   const { url } = req.body;
 
+  if (!url) return res.status(404).json({ error: 'Enter a valid image url' });
+
   const userAlreadyPostedImage = await db('images').first().join('users_images', 'images.id', '=', 'users_images.image_id')
     .join('users', 'users.id', '=', 'users_images.user_id').where({ url, 'users.id': userId }).returning(['entries', 'anaylsis_results']);
 
