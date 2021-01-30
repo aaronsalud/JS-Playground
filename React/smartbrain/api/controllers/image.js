@@ -10,25 +10,33 @@ const app = new Clarifai.App({
 const handleImageRecognitionAnalysis = async (req, res, db) => {
   const { authorization } = req.headers;
   const userId = jwt.decode(authorization).sub;
+  let entries;
+  let imageAnalysisResults;
 
   const { url } = req.body;
 
   const userAlreadyPostedImage = await db('images').first().join('users_images', 'images.id', '=', 'users_images.image_id')
-    .join('users', 'users.id', '=', 'users_images.user_id').where('url', '=', url).returning(['entries', 'anaylsis_results']);
+    .join('users', 'users.id', '=', 'users_images.user_id').where({ url, 'users.id': userId }).returning(['entries', 'anaylsis_results']);
 
   if (!userAlreadyPostedImage) {
     try {
-      const imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
-      if (!imageAnalysisResults) throw 'Failed to analyze image';
+      const existingImage = await db('images').select('*').first().where('url', url);
+      if (!existingImage) {
+        imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
+        if (!imageAnalysisResults) throw 'Failed to analyze image';
 
-      const entries = await updateUserImageEntries(userId, url, imageAnalysisResults, db);
-      if (entries.error) throw entries.error;
+        entries = await updateUserImageEntries(userId, url, imageAnalysisResults, db);
+        if (entries.error) throw entries.error;
+      }
+      else {
+        await db('users_images').first().insert({ user_id: userId, image_id: existingImage.id });
+        entries = (await db('users').where('id', '=', userId).increment('entries', 1).returning('entries')).toString();
+        imageAnalysisResults = existingImage.analysis_results;
+      }
 
       return res.json({ entries, image_analysis_results: imageAnalysisResults });
     }
-    catch (error) {
-      return res.status(400).json({ error });
-    }
+    catch (error) { return res.status(400).json({ error }); }
   }
 
   return res.json({ entries: userAlreadyPostedImage.entries, image_analysis_results: userAlreadyPostedImage.analysis_results });
