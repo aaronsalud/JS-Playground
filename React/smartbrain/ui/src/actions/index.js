@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE } from './types';
+import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE, UNSET_IMAGE } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -80,11 +80,10 @@ export const signIn = (email, password) => async dispatch => {
     }
 };
 
-export const signOut = () => {
+export const signOut = () => dispatch => {
     window.sessionStorage.removeItem('token');
-    return {
-        type: UNSET_USER
-    }
+    dispatch({ type: UNSET_USER });
+    dispatch({ type: UNSET_IMAGE });
 };
 
 export const register = (name, email, password) => async dispatch => {
