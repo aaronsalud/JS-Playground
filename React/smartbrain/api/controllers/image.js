@@ -42,7 +42,6 @@ const updateUserImageEntries = async (id, url, analysis_results, db) => {
     return entries;
   }
   catch (e) {
-    console.log(e);
     return Promise.resolve({ error: "Failed to update user entries" });
   }
 }
