@@ -19,14 +19,15 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
   if (!userAlreadyPostedImage) {
     try {
       const imageAnalysisResults = await app.models.predict(Clarifai.FACE_DETECT_MODEL, url);
-      const entries = await updateUserImageEntries(userId, url, imageAnalysisResults, db);
+      if (!imageAnalysisResults) throw 'Failed to analyze image';
 
-      if (!entries) return res.status(400).json(entries);
+      const entries = await updateUserImageEntries(userId, url, imageAnalysisResults, db);
+      if (entries.error) throw entries.error;
 
       return res.json({ entries, image_analysis_results: imageAnalysisResults });
     }
-    catch (e) {
-      return res.status(400).json({ error: 'Failed to analyze image' });
+    catch (error) {
+      return res.status(400).json({ error });
     }
   }
 
@@ -35,12 +36,13 @@ const handleImageRecognitionAnalysis = async (req, res, db) => {
 
 const updateUserImageEntries = async (id, url, analysis_results, db) => {
   try {
-    const imageId = await db('images').first().insert({ url, analysis_results }).returning('id');
+    const imageId = (await db('images').insert({ url, analysis_results }).returning('id')).toString();
     await db('users_images').first().insert({ user_id: id, image_id: imageId });
-    const entries = await db('users').first().where('id', '=', id).increment('entries', 1).returning('entries');
+    const entries = (await db('users').where('id', '=', id).increment('entries', 1).returning('entries')).toString();
     return entries;
   }
   catch (e) {
+    console.log(e);
     return Promise.resolve({ error: "Failed to update user entries" });
   }
 }
@@ -49,7 +51,8 @@ const getUserImages = async (req, res, db) => {
   const { authorization } = req.headers;
   const userId = jwt.decode(authorization).sub;
   try {
-    const images = await db.select('*').from('images').where({ user_id: userId });
+    const images = await db('images').join('users_images', 'images.id', '=', 'users_images.image_id')
+      .join('users', 'users.id', '=', 'users_images.user_id').where('url', '=', url).returning(['entries', 'anaylsis_results']);
     res.json(images);
   }
   catch (e) {
