@@ -11,11 +11,11 @@ const handleRegister = async (req, res, db) => {
 
     if (userExists) throw 'User already exists';
 
-    const user = await db('users').select('id').first().insert({ email, name, password: bcrypt.hashSync(password), joined: new Date() });
+    const userId = (await db('users').insert({ email, name, password: bcrypt.hashSync(password), joined: new Date() }).returning('id')).toString();
 
-    if (!user) throw 'Failed to create and account - Please contact your admin';
+    if (!userId) throw 'Failed to create and account - Please contact your admin';
 
-    const session = await createSession(user.id);
+    const session = createSession(userId);
     return res.json(session);
   }
   catch (e) { return res.status(400).json({ error: e }) }
