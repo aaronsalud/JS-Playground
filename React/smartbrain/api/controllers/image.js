@@ -51,12 +51,12 @@ const getUserImages = async (req, res, db) => {
   const { authorization } = req.headers;
   const userId = jwt.decode(authorization).sub;
   try {
-    const images = await db('images').join('users_images', 'images.id', '=', 'users_images.image_id')
-      .join('users', 'users.id', '=', 'users_images.user_id').where('url', '=', url).returning(['entries', 'anaylsis_results']);
-    res.json(images);
+    const images = await db('images').select('images.id', 'images.analysis_results', 'images.url').join('users_images', 'images.id', '=', 'users_images.image_id')
+      .join('users', 'users.id', '=', 'users_images.user_id').where('users.id', '=', userId);
+    return res.json(images);
   }
   catch (e) {
-    res.status(404).json({ error: "No images found for this user" });
+    return res.status(404).json({ error: "Failed to get images for this user" });
   }
 };
 
