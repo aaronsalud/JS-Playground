@@ -41,9 +41,7 @@ const updateUserImageEntries = async (id, url, analysis_results, db) => {
     const entries = (await db('users').where('id', '=', id).increment('entries', 1).returning('entries')).toString();
     return entries;
   }
-  catch (e) {
-    return Promise.resolve({ error: "Failed to update user entries" });
-  }
+  catch (e) { return Promise.resolve({ error: "Failed to update user entries" }); }
 }
 
 const getUserImages = async (req, res, db) => {
@@ -54,9 +52,7 @@ const getUserImages = async (req, res, db) => {
       .join('users', 'users.id', '=', 'users_images.user_id').where('users.id', '=', userId);
     return res.json(images);
   }
-  catch (e) {
-    return res.status(404).json({ error: "Failed to get images for this user" });
-  }
+  catch (e) { return res.status(404).json({ error: "Failed to get images for this user" }); }
 };
 
 module.exports = {
