@@ -8,7 +8,7 @@ const generateGravatarImage = email => {
 const getUserProfile = async (req, res, db) => {
 
   try {
-    const user = await db('users').first().where('id', req.params.id).returning(['id', 'name', 'email', 'entries', 'joined']);
+    const user = await db('users').first().select('id', 'name', 'email', 'entries', 'joined').where('id', req.params.id);
     const profileData = { ...user, profile_image: generateGravatarImage(user.email) };
     return res.json(profileData);
   }
