@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE, UNSET_IMAGE } from './types';
+import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE, UNSET_IMAGE, SET_POSTED_IMAGES } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -94,11 +94,18 @@ export const register = (name, email, password) => async dispatch => {
     catch (e) {
         console.log(e);
     }
-}
+};
 
 export const toggleProfileModal = () => {
     return {
         type: PROFILE_MODAL_TOGGLE
     }
-}
+};
 
+export const fetchPostedImages = () => async dispatch => {
+    const { data: images } = await axios.get('/images');
+    dispatch({
+        type: SET_POSTED_IMAGES,
+        payload: images
+    });
+};
