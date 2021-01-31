@@ -9,11 +9,14 @@ const FaceRecognition = ({ url, analysisResults }) => {
   const imgElement = useRef(null);
 
   useEffect(() => {
-    setFaces(calculateFaceLocations(analysisResults, imgElement.current));
-  }, [imgElement]);
+    if (Object.keys(analysisResults).length && imgElement.current)
+      setFaces(calculateFaceLocations(analysisResults, imgElement.current));
+    return () => setFaces([]);
+  }, [imgElement, analysisResults]);
 
   useEffect(() => {
-    setFaceBoxes(renderFaceBoxes());
+    if (faces.length) setFaceBoxes(renderFaceBoxes());
+    return () => setFaceBoxes(null);
   }, [faces]);
 
   const renderFaceBoxes = () => {
@@ -25,7 +28,7 @@ const FaceRecognition = ({ url, analysisResults }) => {
   return (
     <div className='center ma'>
       <div className='absolute pt3 pb3'>
-        <img ref={imgElement} id='inputimage' alt='' src={url} width='500px' heigh='auto' />
+        <img ref={imgElement} id='inputimage' alt='' src={url} width='500px' height='auto' />
         {faceBoxes}
       </div>
     </div>
