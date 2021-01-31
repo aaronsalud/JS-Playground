@@ -5,10 +5,10 @@ import Logo from '../Logo/Logo';
 import Rank from './Rank';
 import ImageLinkForm from './ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './FaceRecognition/FaceRecognition';
-import { setImageUrl, getImageRecognitionResults, toggleProfileModal } from '../../actions';
+import { setImageUrl, getImageRecognitionResults } from '../../actions';
 import requireAuth from '../requireAuth';
 
-const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResults, isProfileModalOpen, toggleProfileModal }) => {
+const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResults }) => {
 
     const { name, entries } = user;
 
@@ -31,4 +31,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, { setImageUrl, getImageRecognitionResults, toggleProfileModal })(requireAuth(Dashboard));
+export default connect(mapStateToProps, { setImageUrl, getImageRecognitionResults })(requireAuth(Dashboard));
