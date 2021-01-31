@@ -7,7 +7,7 @@ const initialState = {
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_POSTED_IMAGES:
-            return action.payload;
+            return { ...state, images: action.payload };
         case UNSET_POSTED_IMAGES:
             return { ...initialState };
         default:
