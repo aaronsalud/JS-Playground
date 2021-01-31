@@ -10,22 +10,7 @@ import requireAuth from '../requireAuth';
 
 const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResults, isProfileModalOpen, toggleProfileModal }) => {
 
-    if (!user) {
-        return <div></div>;
-    }
-
     const { name, entries } = user;
-
-    // const renderProfileModal = () => {
-    //     return (
-    //         <Modal isOpen={isProfileModalOpen} toggle={toggleProfileModal} backdrop={true} keyboard={true}>
-    //             <ModalHeader toggle={toggleProfileModal}>Profile Summary</ModalHeader>
-    //             <ModalBody>
-    //                 <ProfileSummary user={user} />
-    //             </ModalBody>
-    //         </Modal>
-    //     );
-    // };
 
     return (
         <div>
@@ -33,14 +18,13 @@ const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResu
             <Rank name={name} entries={entries} />
             <ImageLinkForm setImageUrl={setImageUrl} getImageRecognitionResults={getImageRecognitionResults} />
             <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
-            {/* {renderProfileModal()} */}
         </div>
     );
 };
 
 const mapStateToProps = state => {
     return {
-        user: state.user,
+        user: state.user || {},
         imageUrl: state.image.url,
         boxes: state.image.boxes,
         isProfileModalOpen: state.modal.isProfileModalOpen
