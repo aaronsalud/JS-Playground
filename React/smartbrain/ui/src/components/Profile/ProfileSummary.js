@@ -1,27 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'reactstrap';
+import { Card, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import ProfileHeader from './ProfileHeader';
+import FaceRecognition from '../Dashboard/FaceRecognition/FaceRecognition';
 import { fetchPostedImages } from '../../actions';
 
 const ProfileSummary = ({ user, images, fetchPostedImages }) => {
 
-    if (!user) {
-        return <div>Loading...</div>
-    }
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [activeImage, setActiveImage] = useState({ url: "", analysisResults: {} });
 
     useEffect(() => {
         fetchPostedImages();
     }, []);
 
     const renderPostedImages = () => {
-        return images.map((image) => {
+        return images.map(image => {
             return (
-                <Card key={image.id} className="w-30 px-2 py-2 m-2">
-                    <img  src={image.url} alt="" />
+                <Card onClick={() => viewImage(image)} key={image.id} className="w-30 px-2 py-2 m-2" style={{ cursor: 'pointer' }}>
+                    <img src={image.url} alt="" />
                 </Card>
             );
         });
+    };
+
+    const toggleModal = () => setIsModalOpen(!isModalOpen);
+
+    const viewImage = image => {
+        const { url, analysis_results } = image;
+        setActiveImage({ url, analysisResults: analysis_results });
+        toggleModal();
     };
 
     return (
@@ -30,14 +38,20 @@ const ProfileSummary = ({ user, images, fetchPostedImages }) => {
             <div className="images flex m-3">
                 {renderPostedImages()}
             </div>
+            <Modal isOpen={isModalOpen} toggle={toggleModal} backdrop={true} keyboard={true}>
+                <ModalHeader toggle={toggleModal}>Image</ModalHeader>
+                <ModalBody>
+                    <FaceRecognition url={activeImage.url} analysisResults={activeImage.analysisResults} />
+                </ModalBody>
+            </Modal>
         </div>
     );
 }
 
 const mapStateToProps = state => {
     return {
-        user: state.user,
-        images: state.profile.images || []
+        user: state.user || {},
+        images: state.profile.images
     }
 };
 
