@@ -13,7 +13,7 @@ const imageReducer = (state = initialState, action) => {
         case SET_IMAGE_BOXES:
             return { ...state, boxes: action.payload };
         case UNSET_IMAGE:
-            return initialState;
+            return { ...initialState };
         default:
             return state;
     }
