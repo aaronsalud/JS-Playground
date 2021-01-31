@@ -10,7 +10,7 @@ export const setImageUrl = (url) => {
     }
 };
 
-const calculateFaceLocations = (data) => {
+export const calculateFaceLocations = (data) => {
     return data.outputs[0].data.regions.map(face => {
         const clarifaiFace = face.region_info.bounding_box;
         const image = document.getElementById('inputimage');
