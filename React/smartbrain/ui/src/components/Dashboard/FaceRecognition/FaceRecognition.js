@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { calculateFaceLocations } from '../../../actions';
 import './FaceRecognition.css';
 
-const FaceRecognition = ({ imageUrl, boxes }) => {
+const FaceRecognition = ({ url, analysisResults }) => {
 
-  const renderBoxes = () => {
-    return boxes.map(box => {
-      return <div className='bounding-box' key={box.id} style={{ top: box.topRow, right: box.rightCol, bottom: box.bottomRow, left: box.leftCol }}></div>
+  const [faces, setFaces] = useState([]);
+  const [faceBoxes, setFaceBoxes] = useState(null);
+  const imgElement = useRef(null);
+
+  useEffect(() => {
+    setFaces(calculateFaceLocations(analysisResults, imgElement.current));
+  }, [imgElement]);
+
+  useEffect(() => {
+    setFaceBoxes(renderFaceBoxes());
+  }, [faces]);
+
+  const renderFaceBoxes = () => {
+    return faces.map(face => {
+      return <div className='bounding-box' key={face.id} style={{ top: face.topRow, right: face.rightCol, bottom: face.bottomRow, left: face.leftCol }}></div>
     });
   };
 
   return (
     <div className='center ma'>
       <div className='absolute pt3 pb3'>
-        <img id='inputimage' alt='' src={imageUrl} width='500px' heigh='auto' />
-        {renderBoxes()}
+        <img ref={imgElement} id='inputimage' alt='' src={url} width='500px' heigh='auto' />
+        {faceBoxes}
       </div>
     </div>
   );
