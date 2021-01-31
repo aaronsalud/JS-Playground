@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL, SET_IMAGE_BOXES, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE, UNSET_IMAGE, SET_POSTED_IMAGES } from './types';
+import { SET_USER, SET_IMAGE_URL, UPDATE_USER_ENTRIES, UNSET_USER, PROFILE_MODAL_TOGGLE, UNSET_IMAGE, SET_POSTED_IMAGES, SET_IMAGE_ANALYSIS_RESULTS } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -29,8 +29,8 @@ export const getImageRecognitionResults = url => async dispatch => {
     try {
         const { data } = await axios.post('/image', { url });
         dispatch({
-            type: SET_IMAGE_BOXES,
-            payload: calculateFaceLocations(data.image_analysis_results)
+            type: SET_IMAGE_ANALYSIS_RESULTS,
+            payload: data.image_analysis_results
         });
 
         dispatch({

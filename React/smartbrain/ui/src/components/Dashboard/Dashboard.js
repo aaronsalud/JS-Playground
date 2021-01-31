@@ -8,7 +8,7 @@ import FaceRecognition from './FaceRecognition/FaceRecognition';
 import { setImageUrl, getImageRecognitionResults } from '../../actions';
 import requireAuth from '../requireAuth';
 
-const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResults }) => {
+const Dashboard = ({ user, url, analysisResults, setImageUrl, getImageRecognitionResults }) => {
 
     const { name, entries } = user;
 
@@ -17,7 +17,7 @@ const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResu
             <Logo />
             <Rank name={name} entries={entries} />
             <ImageLinkForm setImageUrl={setImageUrl} getImageRecognitionResults={getImageRecognitionResults} />
-            <FaceRecognition imageUrl={imageUrl} boxes={boxes} />
+            <FaceRecognition url={url} analysisResults={analysisResults} />
         </div>
     );
 };
@@ -25,8 +25,8 @@ const Dashboard = ({ user, imageUrl, boxes, setImageUrl, getImageRecognitionResu
 const mapStateToProps = state => {
     return {
         user: state.user || {},
-        imageUrl: state.image.url,
-        boxes: state.image.boxes,
+        url: state.image.url,
+        analysisResults: state.image.analysisResults,
         isProfileModalOpen: state.modal.isProfileModalOpen
     }
 }
