@@ -9,6 +9,7 @@ const ProfileSummary = ({ user, images, fetchPostedImages }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [activeImage, setActiveImage] = useState({ url: "", analysisResults: {} });
+    const [facesFound, setFacesFound] = useState(0);
 
     useEffect(() => {
         fetchPostedImages();
@@ -29,6 +30,7 @@ const ProfileSummary = ({ user, images, fetchPostedImages }) => {
     const viewImage = image => {
         const { url, analysis_results } = image;
         setActiveImage({ url, analysisResults: analysis_results });
+        setFacesFound(analysis_results.outputs[0].data.regions.length);
         toggleModal();
     };
 
@@ -39,9 +41,11 @@ const ProfileSummary = ({ user, images, fetchPostedImages }) => {
                 {renderPostedImages()}
             </div>
             <Modal isOpen={isModalOpen} toggle={toggleModal} backdrop={true} keyboard={true}>
-                <ModalHeader toggle={toggleModal}>Image</ModalHeader>
+                <ModalHeader toggle={toggleModal}>{`${facesFound} faces detected in this image`}</ModalHeader>
                 <ModalBody>
-                    <FaceRecognition url={activeImage.url} analysisResults={activeImage.analysisResults} />
+                    <div>
+                        <FaceRecognition url={activeImage.url} analysisResults={activeImage.analysisResults} />
+                    </div>
                 </ModalBody>
             </Modal>
         </div>
