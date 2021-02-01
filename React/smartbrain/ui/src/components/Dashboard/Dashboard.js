@@ -26,8 +26,7 @@ const mapStateToProps = state => {
     return {
         user: state.user || {},
         url: state.image.url,
-        analysisResults: state.image.analysisResults,
-        isProfileModalOpen: state.modal.isProfileModalOpen
+        analysisResults: state.image.analysisResults
     }
 }
 
