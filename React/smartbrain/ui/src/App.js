@@ -22,7 +22,7 @@ class App extends Component {
 
   state = {
     particlesOptions,
-    visible: false
+    alertVisible: false
   }
 
   componentDidMount() {
@@ -35,15 +35,21 @@ class App extends Component {
     }
   }
 
-  onDismiss = () => this.setState({ visible: !this.state.visible });
+  componentDidUpdate() {
+    if (this.props.error && !this.state.alertVisible) {
+      this.onAlertToggle();
+    }
+  }
+
+  onAlertToggle = () => this.setState({ alertVisible: !this.state.alertVisible });
 
   render() {
-    const { particlesOptions, visible } = this.state;
+    const { particlesOptions, alertVisible } = this.state;
     return (
       <div className="App">
         <Router history={history}>
-          <Alert color="danger" isOpen={visible} toggle={this.onDismiss}>
-            I am an alert and I can be dismissed!
+          <Alert color="danger" isOpen={alertVisible} toggle={this.onAlertToggle}>
+            {this.props.error}
           </Alert>
           <Particles className='particles'
             params={particlesOptions}
@@ -63,4 +69,10 @@ class App extends Component {
   }
 }
 
-export default connect(null, { setUser })(App);
+const mapStateToProps = state => {
+  return {
+    error: state.error
+  }
+}
+
+export default connect(mapStateToProps, { setUser })(App);
