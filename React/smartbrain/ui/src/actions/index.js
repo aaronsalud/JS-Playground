@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_USER, SET_IMAGE_URL, UPDATE_USER_ENTRIES, UNSET_USER, UNSET_IMAGE, SET_POSTED_IMAGES, SET_IMAGE_ANALYSIS_RESULTS } from './types';
+import { SET_USER, SET_IMAGE_URL, UPDATE_USER_ENTRIES, UNSET_USER, UNSET_IMAGE, SET_POSTED_IMAGES, SET_IMAGE_ANALYSIS_RESULTS, SET_ERROR_MESSAGE } from './types';
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
@@ -75,7 +75,10 @@ export const signIn = (email, password) => async dispatch => {
         handleAuthRedirect(data, dispatch);
     }
     catch (e) {
-        console.log(e);
+        dispatch({
+            type: SET_ERROR_MESSAGE,
+            payload: e.response.data.error
+        });
     }
 };
 
