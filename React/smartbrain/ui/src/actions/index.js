@@ -74,12 +74,7 @@ export const signIn = (email, password) => async dispatch => {
         const { data } = await axios.post('/signin', { email, password });
         handleAuthRedirect(data, dispatch);
     }
-    catch (e) {
-        dispatch({
-            type: SET_ERROR_MESSAGE,
-            payload: e.response.data.error
-        });
-    }
+    catch (e) { setError(dispatch, e.response.data.error); }
 };
 
 export const signOut = () => dispatch => {
@@ -105,5 +100,5 @@ export const fetchPostedImages = () => async dispatch => {
         payload: images
     });
 };
-
+const setError = (dispatch, error) => dispatch({ type: SET_ERROR_MESSAGE, payload: error })
 export const clearError = () => ({ type: SET_ERROR_MESSAGE, payload: null });
