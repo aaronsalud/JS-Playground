@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Particles from 'react-particles-js';
+import { Alert } from 'reactstrap';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import jwt_decode from 'jwt-decode';
@@ -20,7 +21,8 @@ import './App.css';
 class App extends Component {
 
   state = {
-    particlesOptions
+    particlesOptions,
+    visible: false
   }
 
   componentDidMount() {
@@ -33,11 +35,16 @@ class App extends Component {
     }
   }
 
+  onDismiss = () => this.setState({ visible: !this.state.visible });
+
   render() {
-    const { particlesOptions } = this.state;
+    const { particlesOptions, visible } = this.state;
     return (
       <div className="App">
         <Router history={history}>
+          <Alert color="danger" isOpen={visible} toggle={this.onDismiss}>
+            I am an alert and I can be dismissed!
+          </Alert>
           <Particles className='particles'
             params={particlesOptions}
           />
