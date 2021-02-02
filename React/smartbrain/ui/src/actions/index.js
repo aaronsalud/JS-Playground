@@ -105,3 +105,5 @@ export const fetchPostedImages = () => async dispatch => {
         payload: images
     });
 };
+
+export const clearError = () => ({ type: SET_ERROR_MESSAGE, payload: null });
