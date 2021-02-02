@@ -3,7 +3,7 @@ import { SET_USER, SET_IMAGE_URL, UPDATE_USER_ENTRIES, UNSET_USER, UNSET_IMAGE, 
 import setAuthHeader from '../utils/setAuthHeader';
 import history from '../history';
 
-export const setImageUrl = (url) => {
+export const setImageUrl = url => {
     return {
         type: SET_IMAGE_URL,
         payload: url
@@ -38,9 +38,7 @@ export const getImageRecognitionResults = url => async dispatch => {
             payload: data.entries
         })
     }
-    catch (e) {
-        console.log(e);
-    }
+    catch (e) { setError(dispatch, e.response.data.error); }
 };
 
 const fetchUser = async (id, dispatch) => {
@@ -60,7 +58,7 @@ const fetchUser = async (id, dispatch) => {
     }
 };
 
-export const setUser = (id) => async dispatch => fetchUser(id, dispatch);
+export const setUser = id => async dispatch => fetchUser(id, dispatch);
 
 const handleAuthRedirect = (data, dispatch) => {
     window.sessionStorage.setItem('token', data.token);
