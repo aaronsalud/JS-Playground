@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Card, Modal, ModalBody, ModalHeader } from 'reactstrap';
 import ProfileHeader from './ProfileHeader';
 import FaceRecognition from '../Dashboard/FaceRecognition/FaceRecognition';
+import requireAuth from '../requireAuth';
 import { fetchPostedImages } from '../../actions';
 
 const ProfileSummary = ({ user, images, fetchPostedImages }) => {
@@ -59,4 +60,4 @@ const mapStateToProps = state => {
     }
 };
 
-export default connect(mapStateToProps, { fetchPostedImages })(ProfileSummary);
+export default connect(mapStateToProps, { fetchPostedImages })(requireAuth(ProfileSummary));
