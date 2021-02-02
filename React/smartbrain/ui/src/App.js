@@ -12,7 +12,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import PageNotFound from './components/PageNotFound';
 import ProfileSummary from './components/Profile/ProfileSummary';
 
-import { setUser } from './actions'
+import { setUser, clearError } from './actions'
 import setAuthHeader from './utils/setAuthHeader';
 import history from './history';
 import particlesOptions from './utils/particlesOptions';
@@ -33,6 +33,13 @@ class App extends Component {
       const { sub } = jwt_decode(token);
       this.props.setUser(sub);
     }
+
+    history.listen(() => {
+      if (this.props.error && this.state.alertVisible) {
+        this.setState({ alertVisible: false });
+        this.props.clearError();
+      }
+    })
   }
 
   componentDidUpdate() {
@@ -75,4 +82,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps, { setUser })(App);
+export default connect(mapStateToProps, { setUser, clearError })(App);
