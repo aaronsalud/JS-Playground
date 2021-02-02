@@ -92,11 +92,14 @@ export const register = (name, email, password) => async dispatch => {
 };
 
 export const fetchPostedImages = () => async dispatch => {
-    const { data: images } = await axios.get('/images');
-    dispatch({
-        type: SET_POSTED_IMAGES,
-        payload: images
-    });
+    try {
+        const { data: images } = await axios.get('/images');
+        dispatch({
+            type: SET_POSTED_IMAGES,
+            payload: images
+        });
+    }
+    catch (e) { setError(dispatch, e.response.data.error); }
 };
 const setError = (dispatch, error) => dispatch({ type: SET_ERROR_MESSAGE, payload: error })
 export const clearError = () => ({ type: SET_ERROR_MESSAGE, payload: null });
