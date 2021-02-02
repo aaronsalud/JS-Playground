@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { signIn } from '../../actions';
+import { Link } from 'react-router-dom';
 import history from '../../history';
 
 const Signin = ({ signIn, auth }) => {
@@ -56,7 +57,7 @@ const Signin = ({ signIn, auth }) => {
             <button className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit">Sign In</button>
           </form>
           <div className="lh-copy mt3">
-            <p className="f6 link dim black db pointer">Register</p>
+            <Link to="/register" className="f6 link dim black db pointer">Create an account</Link>
           </div>
         </div>
       </main>
