@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import history from '../../history';
 import { register } from '../../actions';
 
@@ -67,6 +68,9 @@ const Register = ({ register }) => {
               />
             </div>
           </form>
+          <div className="lh-copy mt3">
+            <Link to="/signin" className="f6 link dim black db pointer">Already have an account? Sign In</Link>
+          </div>
         </div>
       </main>
     </article>
