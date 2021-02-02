@@ -88,9 +88,7 @@ export const register = (name, email, password) => async dispatch => {
         const { data } = await axios.post('/register', { email, password, name });
         handleAuthRedirect(data, dispatch);
     }
-    catch (e) {
-        console.log(e);
-    }
+    catch (e) { setError(dispatch, e.response.data.error); }
 };
 
 export const fetchPostedImages = () => async dispatch => {
