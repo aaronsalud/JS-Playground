@@ -1,9 +1,12 @@
 import { SET_ERROR_MESSAGE } from '../actions/types';
 
-const errorReducer = (state = null, action) => {
+const initialState = {
+    errorMessage: null
+}
+const errorReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_ERROR_MESSAGE:
-            return action.payload;
+            return { ...state, errorMessage: action.payload };
         default:
             return state;
     }
