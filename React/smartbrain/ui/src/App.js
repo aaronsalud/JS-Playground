@@ -42,13 +42,14 @@ class App extends Component {
     })
   }
 
-  componentDidUpdate() {
-    if (this.props.error && !this.state.alertVisible) {
-      this.onAlertToggle();
-    }
+  componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.error && this.props.error) this.onAlertToggle();
+    if (prevState.alertVisible && !this.state.alertVisible) this.props.clearError();
   }
 
-  onAlertToggle = () => this.setState({ alertVisible: !this.state.alertVisible });
+  onAlertToggle = () => {
+    this.setState({ alertVisible: !this.state.alertVisible });
+  }
 
   render() {
     const { particlesOptions, alertVisible } = this.state;
@@ -78,7 +79,7 @@ class App extends Component {
 
 const mapStateToProps = state => {
   return {
-    error: state.error
+    error: state.error.errorMessage
   }
 }
 
