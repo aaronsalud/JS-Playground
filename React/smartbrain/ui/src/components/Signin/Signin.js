@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { signIn } from '../../actions';
 import { Link } from 'react-router-dom';
+import { signIn } from '../../actions';
 import history from '../../history';
 
 const Signin = ({ signIn, auth }) => {
 
-  if (window.sessionStorage.getItem('token')) {
-    history.push('/');
-  }
+  if (window.sessionStorage.getItem('token')) history.push('/');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,9 +17,7 @@ const Signin = ({ signIn, auth }) => {
   };
 
   useEffect(() => {
-    if (auth) {
-      history.push('/');
-    }
+    if (auth) history.push('/');
   }, [auth]);
 
   return (
