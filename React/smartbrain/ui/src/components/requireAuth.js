@@ -4,29 +4,12 @@ import history from '../history';
 
 const requireAuth = (ChildComponent) => {
     class ComposedComponent extends Component {
-
-        componentDidMount() {
-            this.navigateAway();
-        }
-
-        componentDidUpdate() {
-            this.navigateAway();
-        }
-
-        navigateAway() {
-            if (!this.props.auth) {
-                history.push('/signin');
-            }
-        }
-
-        render() {
-            return <ChildComponent {...this.props} />
-        }
+        componentDidMount() { this.navigateAway(); }
+        componentDidUpdate() { this.navigateAway(); }
+        navigateAway = () => { if (!this.props.auth) history.push('/signin'); }
+        render() { return <ChildComponent {...this.props} /> }
     }
-    const mapStateToProps = (state) => {
-        return { auth: window.sessionStorage.getItem('token') ? true : false }
-    }
-
+    const mapStateToProps = (state) => ({ auth: window.sessionStorage.getItem('token') ? true : false });
     return connect(mapStateToProps)(ComposedComponent);
 };
 
