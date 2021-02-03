@@ -6,7 +6,7 @@ import { register } from '../../actions';
 
 const Register = ({ register }) => {
 
-  if (window.sessionStorage.getItem('token')) history.push('/');
+  if (window.sessionStorage.getItem('token')) { history.push('/'); return <div></div> }
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
