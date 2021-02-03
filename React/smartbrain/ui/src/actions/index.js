@@ -99,5 +99,10 @@ export const fetchPostedImages = () => async dispatch => {
     }
     catch (e) { setError(dispatch, e.response.data.error); }
 };
-export const setError = (dispatch, error) => dispatch({ type: SET_ERROR_MESSAGE, payload: error })
+
+export const onError = (error) => dispatch => {
+    setError(dispatch, error);
+};
+
+const setError = (dispatch, error) => dispatch({ type: SET_ERROR_MESSAGE, payload: error })
 export const clearError = () => ({ type: SET_ERROR_MESSAGE, payload: null });
