@@ -100,6 +100,10 @@ export const fetchPostedImages = () => async dispatch => {
     catch (e) { setError(dispatch, e.response.data.error); }
 };
 
+export const clearImage = () => dispatch => {
+    dispatch({ type: UNSET_IMAGE });
+};
+
 export const onError = (error) => dispatch => {
     setError(dispatch, error);
 };
