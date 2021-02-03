@@ -11,7 +11,7 @@ const Signin = ({ signIn, auth }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const onSubmitSignIn = (e) => {
+  const onSubmitSignIn = e => {
     e.preventDefault();
     signIn(email, password);
   };
