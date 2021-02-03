@@ -17,7 +17,7 @@ const ImageLinkForm = ({ setImageUrl, onError, getImageRecognitionResults }) => 
     };
     img.onerror = () => {
       setImageUrl(null);
-      onError("Please enter a valid image");
+      onError("Please enter a valid image url");
     };
   };
 
