@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './ImageLinkForm.css';
 
-const ImageLinkForm = ({ setImageUrl, onError, getImageRecognitionResults }) => {
+const ImageLinkForm = ({ setImageUrl, onError, getImageRecognitionResults, clearImage }) => {
 
   const [image, setImage] = useState('');
 
@@ -16,7 +16,7 @@ const ImageLinkForm = ({ setImageUrl, onError, getImageRecognitionResults }) => 
       getImageRecognitionResults(image);
     };
     img.onerror = () => {
-      setImageUrl(null);
+      clearImage();
       onError("Please enter a valid image url");
     };
   };
