@@ -6,7 +6,7 @@ import history from '../../history';
 
 const Signin = ({ signIn }) => {
 
-  if (window.sessionStorage.getItem('token')) history.push('/');
+  if (window.sessionStorage.getItem('token')) { history.push('/'); return <div></div> }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
