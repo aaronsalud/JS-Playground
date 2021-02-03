@@ -7,9 +7,19 @@ const ImageLinkForm = ({ setImageUrl, getImageRecognitionResults }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setImageUrl(image);
-    getImageRecognitionResults(image);
+
+    // Validate Image Load
+    const img = new Image();
+    img.src = image;
+    img.onload = () => {
+      setImageUrl(image);
+      getImageRecognitionResults(image);
+    };
+    img.onerror = () => {
+      console.log('error');
+    };
   };
+
 
   return (
     <div>
